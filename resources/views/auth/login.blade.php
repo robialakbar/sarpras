@@ -42,7 +42,7 @@
                   <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="form-group">
-                      <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Masukkan username" required autocomplete="email" autofocus>
+                      <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="email" value="{{ old('username') }}" placeholder="Masukkan username" required autocomplete="email" autofocus>
                     </div>
 
                     @error('email')

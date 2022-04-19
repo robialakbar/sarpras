@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
             'name'=>'admin',
             'email'=>'admin@gmail.com',
             'username'=>'admin',
-            'password'=>bcrypt('admin'),
+            'password'=> Hash::make('admin'),
             'level'=>'admin'
         ]);
     }
