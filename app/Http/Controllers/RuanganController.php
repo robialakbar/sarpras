@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use auth;
 use Alert;
+use App\Ruangan;
+use DB;
 use Illuminate\Http\Request;
+use auth;
 
 class RuanganController extends Controller
 {
@@ -16,26 +17,11 @@ class RuanganController extends Controller
 
     public function index()
     {
-		// $ruangan = DB::table('users')
-		// 		->join('ruangan', function ($join) {
-		// 				$join->on('users.id', '=', 'ruangan.id_pembimbing');
-		// 		})->get();
 
-		// 		dd($ruangan);
-		
-		// $pjtable= DB::table('users')
-		// 		->join('ruangan', function ($join) {
-		// 				$join->on('users.id', '=', 'ruangan.id_pj');
-		// 		})->get();
-		
-		$pembimbing=DB::table('users')->where('level','rayon')->get();
-		$pj=DB::table('users')->where('level','pj')->get();
-
-		$users = DB::table('users')->get();
-		$ruangan = DB::table('ruangan')->get();
+		$data = Ruangan::get();
  
     	// mengirim data jenis ke view index
-    	return view('ruangan.view',compact('ruangan','pembimbing','pj','users'));
+    	return view('ruangan.view',compact('data'));
  
     }
 
@@ -43,15 +29,10 @@ class RuanganController extends Controller
 	public function store(Request $request)
 	{
 		// insert data ke table jenis
-		DB::table('ruangan')->insert([
-			'ruangan' => $request->ruangan,
-			'id_pembimbing'=>$request->id_pembimbing,
-			'id_pj'=>$request->id_pj
-			
-		]);
+		Ruangan::create($request->all());
 		// alihkan halaman ke halaman jenis
 		Alert::success('Success', 'Data Telah Terinput');
-		return redirect('/ruangan');
+		return redirect(action('RuanganController@index'));
 	 
 	}
 
@@ -59,37 +40,30 @@ class RuanganController extends Controller
 	public function edit($id)
 	{
 
-		$pembimbing=DB::table('users')->where('level','rayon')->get();
-		$pj=DB::table('users')->where('level','pj')->get();
+		$data = Ruangan::find($id);
 
-		$users = DB::table('users')->get();
-		$ruangan = DB::table('ruangan')->where('id_ruangan',$id)->first();
-
-		return view('ruangan.edit',compact('users','ruangan','pj','pembimbing'));
+		return view('ruangan.edit',compact('data'));
 	 
 	}
 
 	// update data jenis
-	public function update(Request $request)
+	public function update(Request $request, $id)
 	{
-		// update data jenis
-		DB::table('ruangan')->where('id_ruangan',$request->id_ruangan)->update([
-			'ruangan' => $request->ruangan,
-			'id_pembimbing'=>$request->id_pembimbing,
-			'id_pj'=>$request->id_pj
+		
+		Ruangan::whereId($id)->update([
+			'kode_ruangan' => $request->kode_ruangan,
+			'nama_ruangan' => $request->nama_ruangan,
 		]);
 		// alihkan halaman ke halaman jenis
 		Alert::success('Success', 'Data Telah Terupdate');
-		return redirect('/ruangan');
+		return redirect(action('RuanganController@index'));
 	}
 
-	public function hapus($id)
+	public function destroy($id)
 	{
-		// menghapus data jenis berdasarkan id yang dipilih
-		DB::table('ruangan')->where('id_ruangan',$id)->delete();
-
-		// alihkan halaman ke halaman ruangan
-		Alert::success('Success', 'Data Telah Terhapus');
-		return redirect('/ruangan');
+		$data = Ruangan::find($id);
+		$data->delete();
+    	$result['code'] = '200';
+    	return response()->json($result);
 	}
 }

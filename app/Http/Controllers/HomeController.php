@@ -55,8 +55,8 @@ class HomeController extends Controller
             ->join('barangs', function ($join) {
                 $join->on('input_ruangan.id_barang', '=', 'barangs.id_barang');
             })
-            ->join('ruangan', function ($join) {
-                $join->on('input_ruangan.id_ruangan_barang', '=', 'ruangan.id_ruangan');
+            ->join('ruangans', function ($join) {
+                $join->on('input_ruangan.id_ruangan_barang', '=', 'ruangans.id');
             })
             ->get();
         $hitung_ruangan=count($inputruangan2);

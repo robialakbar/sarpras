@@ -20,15 +20,15 @@ class KeranjangruanganController extends Controller
 
     {
         $inputruangan = DB::table("keranjang_ruangan")
-            ->join('barangs', function ($join) {
-                $join->on('keranjang_ruangan.id_barang', '=', 'barangs.id_barang');
+            ->join('barang_news', function ($join) {
+                $join->on('keranjang_ruangan.id_barang', '=', 'barang_news.id');
             })
-            ->join('ruangan', function ($join) {
-                $join->on('keranjang_ruangan.id_ruangan', '=', 'ruangan.id_ruangan');
+            ->join('ruangans', function ($join) {
+                $join->on('keranjang_ruangan.id_ruangan', '=', 'ruangans.id');
             })
             ->get();
-        $ruangan = DB::table('ruangan')->get();
-        $barang = DB::table('barangs')->get();
+        $ruangan = DB::table('ruangans')->get();
+        $barang = DB::table('barang_news')->get();
 
         return view('keranjang_ruangan.view', compact('inputruangan', 'barang', 'ruangan'));
     }

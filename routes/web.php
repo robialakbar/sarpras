@@ -1,5 +1,8 @@
 <?php
 
+use App\BarangNew;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +15,7 @@
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+	return view('auth.login');
 });
 
 Route::get('change-password', 'ChangePasswordController@index');
@@ -29,26 +32,35 @@ Route::get('user/json', 'UserController@json');
 Route::resource('user', 'UserController');
 Route::resource('barang', 'BarangController');
 
-
+Route::get('scan-barcode/{id}', function($id){
+	$data = BarangNew::find($id);
+	$url = env('APP_URL') . '/scan-barcode/';
+	$qrcode = QrCode::size(200)->generate($url . $data->id);
+	return view('barang.detail_barcode', compact('data','qrcode'));
+});
 Route::post('/barang/post', 'BarangController@update');
 Route::get('/barang/delete/{id_barang}', 'BarangController@delete');
 Route::get('/barang/edit/{id_barang}', 'BarangController@edit');
 Route::post('/barang/update', 'BarangController@update');
 
+Route::get('import', 'BarangController@import');
+Route::post('import/store', 'BarangController@importStore');
 
 // ruangan
-Route::get('/ruangan', 'RuanganController@index');
-Route::post('/ruangan/store', 'RuanganController@store');
-Route::get('/ruangan/edit/{id_ruangan}', 'RuanganController@edit');
-Route::post('/ruangan/update', 'RuanganController@update');
-Route::get('/ruangan/hapus/{id_ruangan}', 'RuanganController@hapus');
+// Route::get('/ruangan', 'RuanganController@index');
+// Route::post('/ruangan/store', 'RuanganController@store');
+// Route::get('/ruangan/edit/{id_ruangan}', 'RuanganController@edit');
+// Route::post('/ruangan/update', 'RuanganController@update');
+// Route::get('/ruangan/hapus/{id_ruangan}', 'RuanganController@hapus');
+Route::resource('/ruangan', 'RuanganController');
 
 // Kategori
-Route::get('/kategori', 'KategoriController@index');
-Route::post('/kategori/store', 'KategoriController@store');
-Route::get('/kategori/edit/{id_Kategori}', 'KategoriController@edit');
-Route::post('/kategori/update', 'KategoriController@update');
-Route::get('/kategori/hapus/{id_Kategori}', 'KategoriController@hapus');
+Route::resource('/kategori', 'KategoriController');
+// Route::get('/kategori', 'KategoriController@index');
+// Route::post('/kategori/store', 'KategoriController@store');
+// Route::get('/kategori/edit/{id_Kategori}', 'KategoriController@edit');
+// Route::post('/kategori/update', 'KategoriController@update');
+// Route::get('/kategori/hapus/{id_Kategori}', 'KategoriController@hapus');
 
 //users
 Route::get('/user/edit/{id}', 'UserController@edit');

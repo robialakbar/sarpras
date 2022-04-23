@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74f0018f517f2305d11f422d06740de6",
+    "content-hash": "e40c7d782aebf38528ccdbc244564db1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -865,24 +865,23 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "3.1.17",
+            "version": "3.1.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "bd377ad37b285d9bc25c9adca360e4392041dea6"
+                "reference": "96527a9ebc2e79e9a5fa7eaef7e23c9e9bcc587c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/bd377ad37b285d9bc25c9adca360e4392041dea6",
-                "reference": "bd377ad37b285d9bc25c9adca360e4392041dea6",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/96527a9ebc2e79e9a5fa7eaef7e23c9e9bcc587c",
+                "reference": "96527a9ebc2e79e9a5fa7eaef7e23c9e9bcc587c",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0",
-                "opis/closure": "^3.1",
+                "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0|^7.0",
                 "php": "^7.0",
-                "phpoffice/phpspreadsheet": "^1.6"
+                "phpoffice/phpspreadsheet": "^1.10"
             },
             "require-dev": {
                 "mockery/mockery": "^1.1",
@@ -929,7 +928,7 @@
                 "php",
                 "phpspreadsheet"
             ],
-            "time": "2019-09-04T19:28:20+00:00"
+            "time": "2020-02-28T15:47:45+00:00"
         },
         {
             "name": "markbaker/complex",
@@ -3435,6 +3434,57 @@
             "time": "2019-06-15T22:40:20+00:00"
         },
         {
+            "name": "wildside/userstamps",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WildsideUK/Laravel-Userstamps.git",
+                "reference": "a54e057de179cd575ef839935d068cf21ce85960"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WildsideUK/Laravel-Userstamps/zipball/a54e057de179cd575ef839935d068cf21ce85960",
+                "reference": "a54e057de179cd575ef839935d068cf21ce85960",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.2|^6.0|^7.0|^8.0|^9.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "illuminate/database": "^5.2|^6.0|^7.0|^8.0|^9.0",
+                "orchestra/testbench": "^3.1|^4.0|^5.0|^6.0|^7.0",
+                "phpunit/phpunit": "^5.0|^6.0|^7.0|^8.4|^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wildside\\Userstamps\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "WILDSIDE",
+                    "email": "hello@wildside.uk",
+                    "homepage": "https://wildside.uk"
+                }
+            ],
+            "description": "Laravel Userstamps provides an Eloquent trait which automatically maintains `created_by` and `updated_by` columns on your model, populated by the currently authenticated user in your application.",
+            "keywords": [
+                "created_by",
+                "deleted_by",
+                "eloquent",
+                "laravel",
+                "updated_by",
+                "userstamps"
+            ],
+            "time": "2022-02-09T08:47:54+00:00"
+        },
+        {
             "name": "yajra/laravel-datatables-oracle",
             "version": "v9.8.0",
             "source": {
@@ -3802,6 +3852,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2018-07-12T10:23:15+00:00"
         },
         {
@@ -4658,6 +4709,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-07-25T05:29:42+00:00"
         },
         {
@@ -5355,12 +5407,12 @@
             "version": "1.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "83e253c8e0be5b0257b881e1827274667c5c17a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/83e253c8e0be5b0257b881e1827274667c5c17a9",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/83e253c8e0be5b0257b881e1827274667c5c17a9",
                 "reference": "83e253c8e0be5b0257b881e1827274667c5c17a9",
                 "shasum": ""
             },

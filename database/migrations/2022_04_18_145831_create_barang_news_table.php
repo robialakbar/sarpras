@@ -15,19 +15,21 @@ class CreateBarangNewsTable extends Migration
     {
         Schema::create('barang_news', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('kode')->index();
-            $table->string('kode_lokasi')->index();
-            $table->string('tahun_anggaran');
-            $table->string('kode_barang');
-            $table->string('nomor_aset');
-            $table->string('subkelompok_barang');
-            $table->string('merk_type');
-            $table->date('tanggal_perolehan');
+            $table->string('kode')->index()->nullable();
+            $table->string('kode_lokasi')->index()->nullable();
+            $table->string('tahun_anggaran')->nullable();
+            $table->string('kode_barang')->nullable();
+            $table->string('nomor_aset')->nullable();
+            $table->string('subkelompok_barang')->nullable();
+            $table->string('merk_type')->nullable();
+            $table->date('tanggal_perolehan')->nullable();
             $table->string('rupiah_satuan')->default(0);
-            $table->string('ruang')->default(0);
-            $table->string('kondisi_barang')->default(0);
-            $table->string('gambar')->default(0);
-            $table->string('gambar')->default(0);
+            $table->string('ruang')->nullable();
+            $table->string('kondisi_barang')->nullable();
+            $table->string('gambar')->nullable();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('updated_by')->nullable();
+            $table->bigInteger('deleted_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

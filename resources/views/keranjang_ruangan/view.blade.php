@@ -30,7 +30,7 @@
                   <td>{{++$i}}</td>
                  
                   <td>{{$u->ruangan}}</td>
-                  <td>{{$u->nama_barang}}</td>
+                  <td>{{$u->subkelompok_barang}}</td>
                   <td>{{$u->jumlah_masuk}}</td>
                   <td>{{$u->tanggal_masuk}}</td>
                   
@@ -71,7 +71,7 @@
               <select name="id_ruangan" id="" class="myselect" required style="width:100%">
                           <option selected disabled value="">-----Pilih Jenis Ruangan-----</option>
                           @foreach ($ruangan as $j)
-                          <option value="{{$j->id_ruangan}}">{{$j->ruangan}}</option>
+                          <option value="{{$j->id}}">{{$j->kode_ruangan}}-{{$j->nama_ruangan}}</option>
                           @endforeach  
               </select>
           </div>
@@ -86,7 +86,7 @@
                       <select name="id_barang[]" id="" class="myselect" required style="width:200px">
                           <option selected disabled value="">Pilih Jenis Barang</option>
                           @foreach ($barang as $j)
-                          <option value="{{$j->id_barang}}">{{$j->nama_barang}}</option>
+                          <option value="{{$j->id}}">{{$j->subkelompok_barang}}</option>
                           @endforeach  
                     </select>
                     </div>
@@ -128,7 +128,7 @@
 		if(x < max_fields){ //max input box allowed
 			x++; //text box increment
       
-			$(wrapper).append('<div><table><tr><td><select name="id_barang[]" id="" class="myselect" required style="width:200px"><option selected disabled value="">Pilih Jenis Barang</option>@foreach ($barang as $j)<option value="{{$j->id_barang}}">{{$j->nama_barang}}</option>@endforeach</select></div></td><td style="padding-left:80px"><input type="number" name="jumlah[]" class="form-control" required placeholder="Masukan Jumlah" required></td></tr></table><a href="#" class="remove_field">Remove</a></div>');
+			$(wrapper).append('<div><table><tr><td><select name="id_barang[]" id="" class="myselect" required style="width:200px"><option selected disabled value="">Pilih Jenis Barang</option>@foreach ($barang as $j)<option value="{{$j->id}}">{{$j->subkelompok_barang}}</option>@endforeach</select></div></td><td style="padding-left:80px"><input type="number" name="jumlah[]" class="form-control" required placeholder="Masukan Jumlah" required></td></tr></table><a href="#" class="remove_field">Remove</a></div>');
       $('.myselect').select2();
     }
   });

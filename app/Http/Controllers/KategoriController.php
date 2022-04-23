@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use auth;
 use Alert;
+use App\Kategori;
+use DB;
 use Illuminate\Http\Request;
+use auth;
 
 class KategoriController extends Controller
 {
@@ -16,56 +17,50 @@ class KategoriController extends Controller
 
     public function index()
     {
-		$kategori = DB::table('kategori')
-		->get();
-    	return view('kategori.view',compact('kategori'));
+		$data = Kategori::get();
+    	return view('kategori.view',compact('data'));
  
     }
 
     // method untuk insert data ke table jenis
 	public function store(Request $request)
 	{
-		// insert data ke table jenis
-		DB::table('kategori')->insert([
+		Kategori::create($request->all());
 
-			'nama_kategori' => $request->nama_kategori
-			
-		]);
 		// alihkan halaman ke halaman jenis
 		Alert::success('Success', 'Data Telah Terinput');
-		return redirect('/kategori');
+		return redirect(action('KategoriController@index'));
 	 
 	}
 
 	// method untuk edit data pegawai
 	public function edit($id)
 	{
-		// mengambil data jenis berdasarkan id yang dipilih
-		$kategori = DB::table('kategori')->where('id_kategori',$id)->first();
-		// passing data jenis yang didapat ke view edit.blade.php
-		return view('kategori.edit',['kategori' => $kategori]);
+		$data = Kategori::find($id);
+		return view('kategori.edit',compact('data'));
 	 
 	}
 
 	// update data jenis
-	public function update(Request $request)
+	public function update(Request $request, $id)
 	{
-		// update data jenis
-		DB::table('kategori')->where('id_kategori',$request->id_kategori)->update([
+
+		Kategori::whereId($id)->update([
+			'kode_kategori' => $request->kode_kategori,
 			'nama_kategori' => $request->nama_kategori,
 		]);
+
 		// alihkan halaman ke halaman jenis
 		Alert::success('Success', 'Data Telah Terupdate');
-		return redirect('/kategori');
+			return redirect(action('KategoriController@index'));
 	}
 
-	public function hapus($id)
+	public function destroy($id)
 	{
-		// menghapus data jenis berdasarkan id yang dipilih
-		DB::table('kategori')->where('id_kategori',$id)->delete();
 
-		// alihkan halaman ke halaman kategori
-		Alert::success('Success', 'Data Telah Terhapus');
-		return redirect('/kategori');
+		$data = Kategori::find($id);
+		$data->delete();
+    	$result['code'] = '200';
+    	return response()->json($result);
 	}
 }

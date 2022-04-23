@@ -16,6 +16,7 @@
         "maatwebsite/excel": "^3.1",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "uxweb/sweet-alert": "^2.0",
+        "wildside/userstamps": "^2.2",
         "yajra/laravel-datatables-oracle": "^9.8"
     },
     "require-dev": {
@@ -44,6 +45,9 @@
         "classmap": [
             "database/seeds",
             "database/factories"
+        ],
+        "files": [
+        	"app/Helpers/general.php"
         ]
     },
     "autoload-dev": {
