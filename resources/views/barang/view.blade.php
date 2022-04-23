@@ -72,7 +72,7 @@
 	<div class="card-body">
 
 		<div class="table-responsive">
-			<button class="btn btn-primary" data-toggle="modal" data-target="#tambah">Tambah Data</button>
+			<a class="btn btn-primary" href="{{ action('BarangController@create') }}">Tambah Data</a>
 			<a class="btn btn-success" href="{{ action('BarangController@import') }}" >Import</a>
 			<br>
 			<br>
@@ -80,6 +80,8 @@
 			<table class="table table-striped mb-0" data-language="id">
 				<thead>
 					<tr>
+						<th>Opsi</th>
+						<th>QrCode</th>
 						<th>Kode</th>
 						<th>Kode Lokasi</th>
 						<th>Tahun Anggaran</th>
@@ -91,12 +93,24 @@
 						<th>Rupiah Satuan</th>
 						<th>Ruang</th>
 						<th>Kondisi Barang</th>
-						<th>Opsi</th>
 					</tr>
 				</thead>
 				<tbody>
+					@php
+					$url = env('APP_URL') . '/scan-barcode/';
+					@endphp
 					@forelse($data as $k => $val)
+					@php	
+				    	$qrcode = \QrCode::size(100)->generate($url . $val->id);
+					@endphp
 					<tr>
+						<td>
+							<a href="{{ action('BarangController@show', $val->id) }}" class="btn btn-xs btn-primary col-12 m-1">Detail</a>
+							<a href="" class="btn btn-xs btn-warning col-12 m-1">Edit</a>
+							<a href="" class="btn btn-xs btn-info col-12 m-1">Tambah Ruangan</a>
+							<a href="" class="btn btn-xs btn-danger col-12 m-1">Hapus</a>
+						</td>
+						<td>{!! $qrcode  !!}</td>
 						<td>{{ $val->kode }}</td>
 						<td>{{ $val->kode_lokasi }}</td>
 						<td>{{ $val->tahun_anggaran }}</td>
@@ -108,11 +122,6 @@
 						<td>Rp.{{ Ribuan($val->rupiah_satuan) }}</td>
 						<td>{{ $val->ruang }}</td>
 						<td>{{ $val->kondisi_barang }}</td>
-						<td>
-							<a href="{{ action('BarangController@show', $val->id) }}" class="btn btn-xs btn-primary">Detail</a>
-							<a href="" class="btn btn-xs btn-primary">Edit</a>
-							<a href="" class="btn btn-xs btn-primary">Hapus</a>
-						</td>
 					</tr>
 					@empty
 					<tr class="align-middle">

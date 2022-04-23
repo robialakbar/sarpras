@@ -75,7 +75,7 @@
   							<h6 class="collapse-header">Data Master</h6>
   							<a class="collapse-item {{ (request()->is('barang*')) ? 'active' : '' }}" href="{{url('barang')}}">Barang</a>
   							<a class="collapse-item {{ (request()->is('ruangan*')) ? 'active' : '' }}" href="{{url('ruangan')}}">Ruangan</a>
-  							<a class="collapse-item {{ (request()->is('kategori*')) ? 'active' : '' }}" href="{{url('kategori')}}">Kategori</a>
+{{--   							<a class="collapse-item {{ (request()->is('kategori*')) ? 'active' : '' }}" href="{{url('kategori')}}">Kategori</a> --}}
   						</div>
   					</div>
   				</li>
@@ -130,7 +130,7 @@
           <span>Barang Ruangan</span></a>
       </li> --}}
 
-      <li class="nav-item {{ (request()->is('keranjang_ruangan*')) ? 'active' : '' }} {{ (request()->is('input_ruangan*')) ? 'active' : '' }}">
+{{--       <li class="nav-item {{ (request()->is('keranjang_ruangan*')) ? 'active' : '' }} {{ (request()->is('input_ruangan*')) ? 'active' : '' }}">
       	<a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="collapseTwo">
       		<i class="fas fa-fw fa-university"></i>
       		<span>Barang Ruangan</span>
@@ -142,7 +142,7 @@
       			<a class="collapse-item {{ (request()->is('input_ruangan*')) ? 'active' : '' }}" href="{{url('input_ruangan')}}">Data Barang Ruangan</a>
       		</div>
       	</div>
-      </li>
+      </li> --}}
 
       {{-- <li class="nav-item">
         <a class="nav-link" href="{{url('keluar')}}">
@@ -170,7 +170,7 @@
           <span>Barang Masuk</span></a>
       </li> --}}
 
-      <li class="nav-item {{ (request()->is('keranjang_masuk*')) ? 'active' : '' }} {{ (request()->is('masuk*')) ? 'active' : '' }}">
+{{--       <li class="nav-item {{ (request()->is('keranjang_masuk*')) ? 'active' : '' }} {{ (request()->is('masuk*')) ? 'active' : '' }}">
       	<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse4" aria-expanded="true" aria-controls="collapseTwo">
       		<i class="fas fa-fw fa-rocket"></i>
       		<span>Barang Masuk</span>
@@ -182,8 +182,8 @@
       			<a class="collapse-item {{ (request()->is('masuk*')) ? 'active' : '' }}" href="{{url('masuk')}}">Data Masuk</a>
       		</div>
       	</div>
-      </li>
-
+      </li> --}}
+{{-- 
       <li class="nav-item {{ (request()->is('keranjang_rusak_ruangan*')) ? 'active' : '' }} {{ (request()->is('rusak_ruangan*')) ? 'active' : '' }}">
       	<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseb" aria-expanded="true" aria-controls="collapseTwo">
       		<i class="fas fa-fw fa-suitcase"></i>
@@ -196,7 +196,7 @@
       			<a class="collapse-item {{ (request()->is('rusak_ruangan*')) ? 'active' : '' }}" href="{{url('rusak_ruangan')}}">Rusak Ruangan</a>
       		</div>
       	</div>
-      </li>
+      </li> --}}
 
         {{-- <li class="nav-item {{ (request()->is('keranjang_rusak_luar*')) ? 'active' : '' }} {{ (request()->is('rusak_luar*')) ? 'active' : '' }}">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsec" aria-expanded="true" aria-controls="collapseTwo">
@@ -212,7 +212,7 @@
           </div>
       </li> --}}
 
-      <li class="nav-item {{ (request()->is('lap_barang_masuk*')) ? 'active' : '' }} {{ (request()->is('lap_barang_keluar*')) ? 'active' : '' }} {{ (request()->is('lap_barang_ruangan*')) ? 'active' : '' }} {{ (request()->is('lap_peminjaman*')) ? 'active' : '' }} {{ (request()->is('lap_rusak_rusak*')) ? 'active' : '' }} {{ (request()->is('lap_rusak_dalam*')) ? 'active' : '' }}">
+      {{-- <li class="nav-item {{ (request()->is('lap_barang_masuk*')) ? 'active' : '' }} {{ (request()->is('lap_barang_keluar*')) ? 'active' : '' }} {{ (request()->is('lap_barang_ruangan*')) ? 'active' : '' }} {{ (request()->is('lap_peminjaman*')) ? 'active' : '' }} {{ (request()->is('lap_rusak_rusak*')) ? 'active' : '' }} {{ (request()->is('lap_rusak_dalam*')) ? 'active' : '' }}">
       	<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5" aria-expanded="true" aria-controls="collapseTwo">
       		<i class="fas fa-fw fa-file"></i>
       		<span>Laporan</span>
@@ -228,7 +228,7 @@
       			<a class="collapse-item {{ (request()->is('lap_rusak_dalam*')) ? 'active' : '' }}" href="{{url('lap_rusak_dalam')}}">Barang Rusak Dalam</a>
       		</div>
       	</div>
-      </li>
+      </li> --}}
 
 
 

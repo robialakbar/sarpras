@@ -6,6 +6,7 @@ use Alert;
 use App\Barang;
 use App\BarangNew;
 use App\Imports\BarangImport;
+use App\Ruangan;
 use DB;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,23 +23,23 @@ class BarangController extends Controller
 
 	public function index(Request $request)
 	{
-        // $barang = DB::table('barangs')->sum('jumlah');
 
-        // $barang2 = DB::table('barangs')->get();
-
-        // $hitung=count($barang2);
-
-        // $kategori=DB::table('kategori')->get();
-
-        // 
-    	// $data = BarangNew::get();
 		$data  = BarangNew::paginate(10);
 
 		return view('barang.view', compact('data'));
 	}
 
+	public function create(Request $request)
+	{
+
+		$ruangan  = Ruangan::get();
+		$kondisi  = ['baik'=>'baik','rusak'=>'rusak'];
+		return view('barang.create', compact('ruangan','kondisi'));
+	}
+
 	public function store(Request $request)
 	{
+		dd($request);
 		DB::table('barangs')->insert([
 			'id_barang' => $request->id_barang,
 			'kategori_id'=>$request->kategori_id,

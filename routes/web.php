@@ -38,10 +38,10 @@ Route::get('scan-barcode/{id}', function($id){
 	$qrcode = QrCode::size(200)->generate($url . $data->id);
 	return view('barang.detail_barcode', compact('data','qrcode'));
 });
-Route::post('/barang/post', 'BarangController@update');
-Route::get('/barang/delete/{id_barang}', 'BarangController@delete');
-Route::get('/barang/edit/{id_barang}', 'BarangController@edit');
-Route::post('/barang/update', 'BarangController@update');
+// Route::post('/barang/post', 'BarangController@update');
+// Route::get('/barang/delete/{id_barang}', 'BarangController@delete');
+// Route::get('/barang/edit/{id_barang}', 'BarangController@edit');
+// Route::post('/barang/update', 'BarangController@update');
 
 Route::get('import', 'BarangController@import');
 Route::post('import/store', 'BarangController@importStore');
