@@ -154,7 +154,7 @@ class BarangController extends Controller
     public function delete($id)
     {
     	DB::table('barangs')->where('id_barang', $id)->delete();
-    	Alert::success('Success', 'Data Telah Terhapus');
+    	Alert::success('Success', 'Data Telah Terhapus');	
     	return redirect()->route('barang.index');
     }
 
