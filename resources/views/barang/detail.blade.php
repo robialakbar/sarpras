@@ -86,7 +86,11 @@
 				<div class="row">
 					
 					<div class="col-12">
+					@if(!empty($data->gambar))
+					<img src="{{ Storage::url($data->gambar) }}"  class="img-fluid img-thumbnail" alt="Responsive image">
+					@else
 					<img src="{{ asset('assets/img/default.jpg') }}"  class="img-fluid img-thumbnail" alt="Responsive image">
+					@endif
 					</div>
 				</div>
 			</div>

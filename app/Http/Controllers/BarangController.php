@@ -9,6 +9,7 @@ use App\Imports\BarangImport;
 use App\Ruangan;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use auth;
@@ -39,16 +40,29 @@ class BarangController extends Controller
 
 	public function store(Request $request)
 	{
-		dd($request);
-		DB::table('barangs')->insert([
-			'id_barang' => $request->id_barang,
-			'kategori_id'=>$request->kategori_id,
-			'nama_barang' =>  $request->nama_barang,
-			'satuan' =>  $request->satuan,
-			'jumlah' => $request->jumlah,
-		]);
+		// dd($request->all());
+		$data["kode"] = $request->kode_lokasi.$request->tahun_anggaran.$request->kode_barang.$request->nomor_aset;
+		$data["kode_lokasi"] = $request->kode_lokasi;
+		$data["tahun_anggaran"] = $request->tahun_anggaran;
+		$data["kode_barang"] = $request->kode_barang;
+		$data["nomor_aset"] = $request->nomor_aset;
+		$data["subkelompok_barang"] = $request->subkelompok_barang;
+		$data["merk_type"] = $request->merk_type;
+		$data["tanggal_perolehan"] = $request->tanggal_perolehan;
+		$data["rupiah_satuan"] = $request->rupiah_satuan;
+		$data["ruang"] = $request->ruang;
+		$data["kondisi_barang"] = $request->kondisi_barang;
+
+		if ($request->has('gambar')) {
+			$extension = $request->file('gambar')->extension();
+			$imgName = 'gambar/' . date('dmh') . '-' .rand(1,10).'-'. $data['kode'] . '.' . $extension;
+			$path = Storage::putFileAs('public', $request->file('gambar'), $imgName);
+			$data['gambar'] = $path;
+		}
+
+		BarangNew::create($data);
 		Alert::success('Success', 'Data Telah Terinput');
-		return redirect()->back();
+		return redirect(action('BarangController@index'));
 	}
 
 
@@ -153,8 +167,8 @@ class BarangController extends Controller
     public function importStore(Request $request)
     {
     	Excel::import(new BarangImport(), $request->file('import_file'));
-
-    	return 'success';
+    	Alert::success('Success', 'Data Telah Terhapus');
+    	return back();
     }
 
     public function show($id)
