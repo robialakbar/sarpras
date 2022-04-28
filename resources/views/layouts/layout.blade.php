@@ -26,6 +26,7 @@
   	<script src="{{ asset('/vendor/sweetalert/sweetalert2.min.js') }}"></script>
   	<link rel="stylesheet" href="{{ asset('/vendor/sweetalert/sweetalert2.min.css') }}">
   	  <link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet">
+  	  @toastr_css
   	  @yield('css')
   </head>
 
@@ -411,6 +412,7 @@
 
   <!-- Page level custom scripts -->
   <script src="{{url('assets/js/demo/datatables-demo.js')}}"></script>
+  <script src="{{asset('js/custom.js')}}"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
@@ -458,14 +460,15 @@
   					},
   					success:function(data) {
   						if (data.code == '200'){
-  							Swal.fire(
-  								'Deleted!',
-  								'Your file has been deleted.',
-  								'success'
-  								);
+  							// Swal.fire(
+  							// 	'Deleted!',
+  							// 	'Your file has been deleted.',
+  							// 	'success'
+  							// 	);
+  							toastr.success('Data Berhasil Dihapus');
   							setTimeout(function() { 
   								location.reload();
-  							}, 2000);
+  							}, 1000);
   						}
   					}
   				});
@@ -474,7 +477,46 @@
   		})
 		}) //tutup
 	</script>
+	<script>
+		@if(count($errors) > 0)
+		@foreach($errors->all() as $error)
+		toastr.error("{{ $error }}");
+		@endforeach
+		@endif
+	</script>
+	{{-- modal --}}
+	<div class="modal fade" id="ModalFormSm" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-content-form"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="ModalForm" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true" >
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-content-form"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="ModalFormLg" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-content-form"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="ModalFormXl" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-content-form"></div>
+			</div>
+		</div>
+	</div>
 	@yield('js')
+
+@toastr_js
+@toastr_render
 </body>
 
 </html>

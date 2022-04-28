@@ -30,6 +30,8 @@ Route::get('/home', 'HomeController@index');
 Route::post('/user/post', 'UserController@update');
 Route::get('user/json', 'UserController@json');
 Route::resource('user', 'UserController');
+Route::get('barang/{id}/tambah-ruang', 'BarangController@tambahRuang');
+Route::put('barang/{id}/simpan-ruang', 'BarangController@simpanRuang');
 Route::resource('barang', 'BarangController');
 
 Route::get('scan-barcode/{id}', function($id){
@@ -52,6 +54,7 @@ Route::post('import/store', 'BarangController@importStore');
 // Route::get('/ruangan/edit/{id_ruangan}', 'RuanganController@edit');
 // Route::post('/ruangan/update', 'RuanganController@update');
 // Route::get('/ruangan/hapus/{id_ruangan}', 'RuanganController@hapus');
+
 Route::resource('/ruangan', 'RuanganController');
 
 // Kategori

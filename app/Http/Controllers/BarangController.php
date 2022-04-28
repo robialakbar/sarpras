@@ -24,10 +24,20 @@ class BarangController extends Controller
 
 	public function index(Request $request)
 	{
+		$ruangan  = Ruangan::pluck('nama_ruangan','nama_ruangan');
+		$tahun = BarangNew::groupBy('tahun_anggaran')->pluck('tahun_anggaran','tahun_anggaran');
+		$data  = BarangNew::when($request->has('kode') && !empty($request->kode), function($q){
+						$q->where('kode','like','%'.request()->kode.'%');
+					})
+					->when($request->has('ruang') && !empty($request->ruang), function($q){
+						$q->where('ruang','like','%'.request()->ruang.'%');
+					})					
+					->when($request->has('tahun') && !empty($request->tahun), function($q){
+						$q->where('tahun_anggaran','like','%'.request()->tahun.'%');
+					})
+					->paginate(10);
 
-		$data  = BarangNew::paginate(10);
-
-		return view('barang.view', compact('data'));
+		return view('barang.view', compact('data','ruangan','tahun'));
 	}
 
 	public function create(Request $request)
@@ -61,7 +71,8 @@ class BarangController extends Controller
 		}
 
 		BarangNew::create($data);
-		Alert::success('Success', 'Data Telah Terinput');
+
+		toastr()->success('Data Telah Terinput','success!');
 		return redirect(action('BarangController@index'));
 	}
 
@@ -69,13 +80,11 @@ class BarangController extends Controller
 	public function edit($id)
 	{
 
-		$barang2 = DB::table('barangs')->where('id_barang', $id)->first();
-		$barang = DB::table('barangs')->get();
-		$kategori = DB::table('kategori')->get();
+		$data = BarangNew::find($id);
+		$ruangan  = Ruangan::get();
+		$kondisi  = ['baik'=>'baik','rusak'=>'rusak'];
 
-
-
-		return view('barang.edit', compact('barang', 'barang2','kategori'));
+		return view('barang.edit', compact('data', 'ruangan', 'kondisi'));
 	}
 
 
@@ -94,55 +103,31 @@ class BarangController extends Controller
      * @param  \App\Barang  $barang
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-    	DB::table('input_ruangan')->where('id_barang', $request->id)->update([
-    		'id_barang' => $request->id_barang,
-    	]);
-    	DB::table('keluar')->where('id_barang', $request->id)->update([
-    		'id_barang' => $request->id_barang,
-    	]);
-    	DB::table('keranjang_keluar')->where('id_barang', $request->id)->update([
-    		'id_barang' => $request->id_barang,
-    	]);
-    	DB::table('keranjang_masuk')->where('id_barang', $request->id)->update([
-    		'id_barang' => $request->id_barang,
-    	]);
-    	DB::table('keranjang_peminjaman')->where('id_barang', $request->id)->update([
-    		'id_barang' => $request->id_barang,
-    	]);
-    	DB::table('keranjang_ruangan')->where('id_barang', $request->id)->update([
-    		'id_barang' => $request->id_barang,
-    	]);
-    	DB::table('masuk')->where('id_barang', $request->id)->update([
-    		'id_barang' => $request->id_barang,
-    	]);
-    	DB::table('peminjaman')->where('id_barang', $request->id)->update([
-    		'id_barang' => $request->id_barang,
-    	]);
-    	DB::table('keranjang_rusak_luar')->where('id_barang_rusak_luar', $request->id)->update([
-    		'id_barang_rusak_luar' => $request->id_barang,
-    	]);
-    	DB::table('keranjang_rusak_ruangan')->where('id_barang_rusak', $request->id)->update([
-    		'id_barang_rusak' => $request->id_barang,
-    	]);
-    	DB::table('rusak_luar')->where('id_barang_rusak_luar', $request->id)->update([
-    		'id_barang_rusak_luar' => $request->id_barang,
-    	]);
-    	DB::table('rusak_ruangan')->where('id_barang_rusak', $request->id)->update([
-    		'id_barang_rusak' => $request->id_barang,
-    	]);
+    	$data["kode"] = $request->kode_lokasi.$request->tahun_anggaran.$request->kode_barang.$request->nomor_aset;
+		$data["kode_lokasi"] = $request->kode_lokasi;
+		$data["tahun_anggaran"] = $request->tahun_anggaran;
+		$data["kode_barang"] = $request->kode_barang;
+		$data["nomor_aset"] = $request->nomor_aset;
+		$data["subkelompok_barang"] = $request->subkelompok_barang;
+		$data["merk_type"] = $request->merk_type;
+		$data["tanggal_perolehan"] = $request->tanggal_perolehan;
+		$data["rupiah_satuan"] = $request->rupiah_satuan;
+		$data["ruang"] = $request->ruang;
+		$data["kondisi_barang"] = $request->kondisi_barang;
 
-    	DB::table('barangs')->where('id_barang', $request->id)->update([
-    		'id_barang' => $request->id_barang,
-    		'kategori_id'=>$request->kategori_id,
-    		'nama_barang' => $request->nama_barang,
-    		'satuan' => $request->satuan,
-    		'jumlah' => $request->jumlah
-    	]);
-        // alihkan halaman ke halaman pegawai
-    	Alert::success('Success', 'Data Telah Terupdate');
-    	return redirect('/barang');
+		if ($request->has('gambar')) {
+			$extension = $request->file('gambar')->extension();
+			$imgName = 'gambar/' . date('dmh') . '-' .rand(1,10).'-'. $data['kode'] . '.' . $extension;
+			$path = Storage::putFileAs('public', $request->file('gambar'), $imgName);
+			$data['gambar'] = $path;
+		}
+
+		BarangNew::where('id', $id)->update($data);
+
+		toastr()->success('Data Telah Terupdate','success!');
+		return redirect(action('BarangController@index'));
     }
 
     /**
@@ -179,4 +164,30 @@ class BarangController extends Controller
     	$qrcode = QrCode::size(200)->generate($url . $data->id);
     	return view('barang.detail', compact('data', 'qrcode'));
     }
+
+    public function tambahRuang($id)
+    {
+    	$data = Ruangan::pluck('nama_ruangan','nama_ruangan');
+    	$barang = BarangNew::find($id);
+    	return view('barang.tambah_ruang', compact('data','barang'));
+    }
+
+     public function simpanRuang(Request $request, $id)
+    {
+    	BarangNew::where('id',$id)->update([
+    		'ruang' => $request->ruang
+    	]);
+		toastr()->success('Data Telah Terupdate','success!');
+
+    	return back();
+    }
+
+    public function destroy($id)
+	{
+		$data = BarangNew::find($id);
+		$data->delete();
+    	$result['code'] = '200';
+    	return response()->json($result);
+	}
+
 }

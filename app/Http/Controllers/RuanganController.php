@@ -31,7 +31,7 @@ class RuanganController extends Controller
 		// insert data ke table jenis
 		Ruangan::create($request->all());
 		// alihkan halaman ke halaman jenis
-		Alert::success('Success', 'Data Telah Terinput');
+		toastr()->success('Data Telah Terinput','success!');
 		return redirect(action('RuanganController@index'));
 	 
 	}
@@ -55,7 +55,8 @@ class RuanganController extends Controller
 			'nama_ruangan' => $request->nama_ruangan,
 		]);
 		// alihkan halaman ke halaman jenis
-		Alert::success('Success', 'Data Telah Terupdate');
+
+		toastr()->success('Data Telah Terupdate','success!');
 		return redirect(action('RuanganController@index'));
 	}
 
