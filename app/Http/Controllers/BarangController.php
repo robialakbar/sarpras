@@ -44,7 +44,7 @@ class BarangController extends Controller
 	{
 
 		$ruangan  = Ruangan::get();
-		$kondisi  = ['baik'=>'baik','rusak'=>'rusak'];
+		$kondisi  = ['Baik'=>'Baik','Rusak Ringan'=>'Rusak Ringan','Rusak Berat'=>'Rusak Berat',];
 		return view('barang.create', compact('ruangan','kondisi'));
 	}
 
@@ -82,7 +82,7 @@ class BarangController extends Controller
 
 		$data = BarangNew::find($id);
 		$ruangan  = Ruangan::get();
-		$kondisi  = ['baik'=>'baik','rusak'=>'rusak'];
+			$kondisi  = ['Baik'=>'Baik','Rusak Ringan'=>'Rusak Ringan','Rusak Berat'=>'Rusak Berat',];
 
 		return view('barang.edit', compact('data', 'ruangan', 'kondisi'));
 	}

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use DB;
-use Carbon\Carbon;
+use App\BarangNew;
 use Auth;
+use Carbon\Carbon;
+use DB;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -24,57 +25,86 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        if (Auth::user()->level=='admin') {
-            $barang2 = DB::table('barangs')->get();
+    	$barang = BarangNew::when($request->has('tahun') && !empty($request->tahun), function($q){
+						$q->where('tahun_anggaran','like','%'.request()->tahun.'%');
+					})->get();
+    	$tahun = BarangNew::groupBy('tahun_anggaran')->pluck('tahun_anggaran');
+    	
+    	$baik = BarangNew::selectRaw('count(*) as jumlah, tahun_anggaran')->where('kondisi_barang','Baik')->groupBy('tahun_anggaran')->pluck('jumlah','tahun_anggaran')->toArray();
+    	$rusakRingan = BarangNew::selectRaw('count(*) as jumlah,tahun_anggaran')->where('kondisi_barang','Rusak Ringan')->groupBy('tahun_anggaran')->pluck('jumlah', 'tahun_anggaran')->toArray();
+    	$rusakBerat = BarangNew::selectRaw('count(*) as jumlah,tahun_anggaran')->where('kondisi_barang','Rusak Berat')->groupBy('tahun_anggaran')->pluck('jumlah', 'tahun_anggaran')->toArray(); 	
+    	$jumlahBaik = $jumlahRusakRingan = $jumlahRusakBerat = [];
+    	foreach ($tahun as $key => $value) {
+    	
+	    	if(in_array($value, array_keys($baik))){
+	    		$jumlahBaik[] = $baik[$value];
+		    	// dd($baik[$value],array_keys($baik), $rusakBerat, $rusakRingan, $value);
+	    	}else{
+	    		$jumlahBaik[] = 0;
+	    	}
 
-        $hitung_barang=count($barang2);
+	    	if(in_array($value, array_keys($rusakRingan))){
+	    		$jumlahRusakRingan[] = $rusakRingan[$value];
+		    	// dd($baik[$value],array_keys($baik), $rusakBerat, $jumlahRusakRingan, $value);
+	    	}else{
+	    		$jumlahRusakRingan[] = 0;
+	    	}
 
-        $masuk2 = DB::table("masuk")
-            ->join('barangs', function ($join) {
-                $join->on('masuk.id_barang', '=', 'barangs.id_barang');
-            })->get();
-        $hitung_masuk=count($masuk2);
+	    	if(in_array($value, array_keys($rusakBerat))){
+	    		$jumlahRusakBerat[] = $rusakBerat[$value];
+		    	// dd($baik[$value],array_keys($baik), $jumlahRusakBerat, $rusakRingan, $value);
+	    	}else{
+	    		$jumlahRusakBerat[] = 0;
+	    	}
+    	
+    	}
 
-        $keluar2 = DB::table("keluar")
-            ->join('barangs', function ($join) {
-                $join->on('keluar.id_barang', '=', 'barangs.id_barang');
-            })->get();
-        
-        $hitung_keluar=count($keluar2);
+    	$jumlahBaik = json_encode($jumlahBaik);
+    	$jumlahRusakRingan = json_encode($jumlahRusakRingan);
+    	$jumlahRusakBerat = json_encode($jumlahRusakBerat);
 
-        $peminjaman = DB::table("peminjaman")
-            ->join('barangs', function ($join) {
-            $join->on('peminjaman.id_barang', '=', 'barangs.id_barang');
-            })->get();
-        
-        $hitung_pinjam=count($peminjaman);
+    	$chartJumlahBaik = BarangNew::selectRaw('count(*) as jumlah')->when($request->has('tahun') && !empty($request->tahun), function($q){
+						$q->where('tahun_anggaran','like','%'.request()->tahun.'%');
+					})->where('kondisi_barang','Baik')->groupBy('tahun_anggaran')->pluck('jumlah');
+    	$chartJumlahRusakRingan = BarangNew::selectRaw('count(*) as jumlah')->when($request->has('tahun') && !empty($request->tahun), function($q){
+						$q->where('tahun_anggaran','like','%'.request()->tahun.'%');
+					})->where('kondisi_barang','Rusak Ringan')->groupBy('tahun_anggaran')->pluck('jumlah');
+    	$chartJumlahRusakBerat = BarangNew::selectRaw('count(*) as jumlah')->when($request->has('tahun') && !empty($request->tahun), function($q){
+						$q->where('tahun_anggaran','like','%'.request()->tahun.'%');
+					})->where('kondisi_barang','Rusak Berat')->groupBy('tahun_anggaran')->pluck('jumlah');    	
 
-        $inputruangan2 = DB::table("input_ruangan")
-            ->join('barangs', function ($join) {
-                $join->on('input_ruangan.id_barang', '=', 'barangs.id_barang');
-            })
-            ->join('ruangans', function ($join) {
-                $join->on('input_ruangan.id_ruangan_barang', '=', 'ruangans.id');
-            })
-            ->get();
-        $hitung_ruangan=count($inputruangan2);
+    	$kategoriBarang = BarangNew::selectRaw('count(*) as jumlah, subkelompok_barang')->when($request->has('tahun') && !empty($request->tahun), function($q){
+						$q->where('tahun_anggaran','like','%'.request()->tahun.'%');
+					})->groupBy('subkelompok_barang')->orderBy('jumlah','desc')->pluck('jumlah', 'subkelompok_barang');
+    	$labelBarang = [];
+    	$jumlahBarang = [];
+    	$i = 1;
+    	foreach ($kategoriBarang as $key => $value) {
+    		if($i >= 10 ){
+    			$labelBarang['other'][] = $value;
+    		}else{
+    			$labelBarang[$key][] = $value;
+    		}
+    		$i++;
+    	}
 
-        $rusak_dalam=DB::table('rusak_ruangan')->get();
-        $hitung_dalam=count($rusak_dalam);
-         $rusak_luar=DB::table('rusak_luar')->get();
-        $hitung_luar=count($rusak_luar);
+    	foreach ($labelBarang as $key => $value) {
+    		$jumlahBarang[] = array_sum($value);
+    	}
+    	$labelChart3 = json_encode(array_keys($labelBarang));
+    	$dataChart3 = json_encode($jumlahBarang);
+      	// dd(array_keys($kategoriBarang));
+    	$dataChart2 = json_encode([ $chartJumlahBaik->sum(),$chartJumlahRusakRingan->sum(),$chartJumlahRusakBerat->sum()  ]);
+    	// dd(json_encode($dataChart2));
+    	// $labels = BarangNew::groupBy('tahun_anggaran')
 
-
-        return view('user.home',compact('hitung_barang','hitung_masuk','hitung_keluar','hitung_pinjam','hitung_ruangan','hitung_dalam','hitung_luar'));
-        }else{
-            return view('pembimbing.dashboard_pem');
-        }
+        return view('user.home',compact('barang','tahun','jumlahBaik','jumlahRusakRingan','jumlahRusakBerat','dataChart2','labelChart3','dataChart3','kategoriBarang'));
+    //     }else{
+    //         return view('pembimbing.dashboard_pem');
+    //     }
     }
+   
 
-    public function update_siswa(Request $request)
-    {
-        
-    }
 }
