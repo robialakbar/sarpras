@@ -17,15 +17,15 @@
 			borderColor: 'rgb(28, 200, 138)',
 			data: <?= $jumlahBaik ?>
 		},{
-			label: 'Rusak Berat',
-			backgroundColor: '#e74a3b',
-			borderColor: '#e74a3b',
-			data: <?= $jumlahRusakBerat ?>
-		},{
 			label: 'Rusak Ringan',
 			backgroundColor: '#f6c23e',
 			borderColor: '#f6c23e',
 			data: <?= $jumlahRusakRingan ?>
+		},{
+			label: 'Rusak Berat',
+			backgroundColor: '#e74a3b',
+			borderColor: '#e74a3b',
+			data: <?= $jumlahRusakBerat ?>
 		},]
 	}
 
@@ -224,15 +224,6 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="containers">
-				@foreach($kategoriBarang as $key => $val)
-				@if($loop->index  <= 6)
-				<div class="items a{{ $loop->index + 1 }}">{{ $key }}</div>
-				@endif
-				@endforeach
-			</div>
-		</div>
-		<div class="col-md-6">
 			<div class="card">
 				<div class="card-body">
 					<canvas id="myChart3"></canvas>
@@ -241,68 +232,4 @@
 		</div>
 	</div>
 </div>
-@endsection
-@section('css')
-<style type="text/css">
-
-	.containers {
-		width: 100%;
-		min-height: 100%;
-		border: 0.5px solid #4A4949;
-		display: grid;
-		grid-template-columns: 40% 30% 20% 10%;
-		grid-template-rows: 40% 30% 20% 10%;
-		grid-template-areas: "A B B B" "A E F C" "A E G C" "A D D C";
-	}
-
-	.items {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 100%;
-		width: 100%;
-		color: #F2F2F2;
-		font-size: 1.5em;
-		font-weight: 700;
-		text-shadow: 1px 1px 1px #878787;
-		box-sizing: border-box;
-		border: 0.5px solid #4A4949;
-	}
-	.items.a1 {
-		grid-area: A;
-		font-size: 1.2em;
-		background-color: #a0ddff;
-	}
-	.items.a2 {
-		grid-area: B;
-		font-size: 1.2em;
-		background-color: #c1cefe;
-	}
-	.items.a3 {
-		grid-area: C;
-		font-size: 0.8em;
-		background-color: #758ecd;
-	}
-	.items.a4 {
-		grid-area: D;
-		font-size: 1.2em;
-		background-color: #7189ff;
-	}
-	.items.a5 {
-		grid-area: E;
-		font-size: 1.2em;
-		background-color: #624cab;
-	}
-	.items.a6 {
-		grid-area: F;
-		font-size: 1em;
-		background-color: #5d2e8c;
-	}
-	.items.a7 {
-		grid-area: G;
-		font-size: 0.7em;
-		background-color: #7a7a7a;
-	}
-
-</style>
 @endsection
