@@ -1,4 +1,12 @@
 @extends('layouts.layout')
+@section('js')
+  <script src="{{ asset('js/printThis.js') }}"></script>
+  <script type="text/javascript">
+  	$(document).on('click','#print', function(){
+  		$('#barcode').printThis();
+  	})
+  </script>
+@endsection
 @section('css')
 <style type="text/css">
 
@@ -19,7 +27,10 @@
 @section('heading-title')
 <div class="row">
 	<div class="col-6"><h3>Detail Data Barang</h3></div>
-	<div class="text-right col-6"><a href="{{ action('BarangController@index') }}" class="btn btn-warning">Kembali</a></div>
+	<div class="text-right col-6">
+		<button type="button" class="btn btn-warning" id="print">Print Barcode</button>
+		<a href="{{ action('BarangController@index') }}" class="btn btn-warning">Kembali</a>
+	</div>
 </div>
 @endsection
 @section('content-new')
@@ -28,7 +39,7 @@
 	<div class="col-md-8">
 		<div class="card">
 			<div class="card-body">
-				<div class="col-12 text-center">
+				<div class="col-12 text-center" id="barcode">
 					{!! $qrcode !!}
 					</div>
 				<table>
