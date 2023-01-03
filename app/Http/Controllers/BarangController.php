@@ -35,7 +35,8 @@ class BarangController extends Controller
             ->when($request->has('tahun') && !empty($request->tahun), function ($q) {
                 $q->where('tahun_anggaran', 'like', '%' . request()->tahun . '%');
             })
-            ->paginate(10);
+            // ->paginate(10);
+            ->get();
 
         return view('barang.view', compact('data', 'ruangan', 'tahun'));
     }
