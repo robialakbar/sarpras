@@ -64,7 +64,7 @@
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                                 <label for="validationDefault01">Kode</label>
-                                <input type="text" class="form-control" id="validationDefault01" placeholder="Pencarian Kode" name="kode">
+                                <input type="text" class="form-control" id="validationDefault01" placeholder="Pencarian Kode" name="kode" value="{{ request()->get('kode') }}">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
@@ -72,7 +72,7 @@
                                     <select class="form-control" name="ruang">
                                         <option disabled selected>Pilih Ruangan</option>
                                         @foreach ($ruangan as $val)
-                                            <option value="{{ $val }}">{{ $val }}</option>
+                                            <option {{ request()->get('ruang') == $val ? 'selected' : '' }} value="{{ $val }}">{{ $val }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -80,10 +80,65 @@
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Tahun Anggaran</label>
-                                    <select class="form-control" name="tahun">
+                                    <select class="form-control" name="tahun_anggaran">
                                         <option disabled selected>Pilih Tahun Anggaran</option>
                                         @foreach ($tahun as $val)
-                                            <option value="{{ $val }}">{{ $val }}</option>
+                                            <option {{ request()->get('tahun_anggaran') == $val ? 'selected' : '' }} value="{{ $val }}">{{ $val }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Kode Lokasi</label>
+                                    <select class="form-control" name="kode_lokasi">
+                                        <option disabled selected>Pilih Lokasi</option>
+                                        @foreach ($barang->pluck('kode_lokasi', 'kode_lokasi') as $val)
+                                            <option {{ request()->get('kode_lokasi') == $val ? 'selected' : '' }} value="{{ $val }}">{{ $val }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">kode barang</label>
+                                    <select class="form-control" name="kode_barang">
+                                        <option disabled selected>Pilih Kode Barang</option>
+                                        @foreach ($barang->pluck('kode_barang', 'kode_barang') as $val)
+                                            <option {{ request()->get('kode_barang') == $val ? 'selected' : '' }} value="{{ $val }}">{{ $val }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Sub Kelompok Barang</label>
+                                    <select class="form-control" name="sub_kelompok_barang">
+                                        <option disabled selected>Pilih Sub Kelompok Barang</option>
+                                        @foreach ($barang->pluck('subkelompok_barang', 'subkelompok_barang') as $val)
+                                            <option {{ request()->get('subkelompok_barang') == $val ? 'selected' : '' }} value="{{ $val }}">{{ $val }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Kondisi Barang</label>
+                                    <select class="form-control" name="kondisi_barang">
+                                        <option disabled selected>Pilih Kondisi barang</option>
+                                        @foreach ($barang->pluck('kondisi_barang', 'kondisi_barang') as $val)
+                                            <option {{ request()->get('kondisi_barang') == $val ? 'selected' : '' }} value="{{ $val }}">{{ $val }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Tahun Perolehan</label>
+                                    <select class="form-control" name="tahun_perolehan">
+                                        <option disabled selected>Tahun Perolehan</option>
+                                        @foreach ($barang->pluck('tahun_perolehan', 'tahun_perolehan') as $val)
+                                            <option {{ request()->get('tahun_perolehan') == $val ? 'selected' : '' }} value="{{ $val }}">{{ $val }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -92,6 +147,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="row justify-content-md-center">
+                            <input type="hidden" name="query" value="true">
                             <button class="btn btn-primary col-5 mx-1">Filter</button>
                             <a href="{{ action('BarangController@index') }}" class="btn btn-warning col-5 mx-1">Reset</a>
                         </div>
@@ -143,7 +199,7 @@
                         @php
                             $url = env('APP_URL') . '/scan-barcode/';
                         @endphp
-                        @forelse($data as $k => $val)
+                        @foreach ($data as $k => $val)
                             @php
                                 $qrcode = \QrCode::format('png')
                                     ->size(100)
@@ -175,13 +231,7 @@
                                 <td>{{ $val->kondisi_barang }}</td>
                                 <td>{{ $val->keterangan }}</td>
                             </tr>
-                        @empty
-                            <tr class="align-middle">
-                                <td colspan="13" class="text-center">
-                                    <h5>Tidak ada data untuk ditampilkan</h5>
-                                </td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

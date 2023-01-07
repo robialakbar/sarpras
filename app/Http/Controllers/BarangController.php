@@ -26,19 +26,24 @@ class BarangController extends Controller
     {
         $ruangan  = Ruangan::pluck('nama_ruangan', 'id');
         $tahun = BarangNew::groupBy('tahun_anggaran')->pluck('tahun_anggaran', 'tahun_anggaran');
-        $data  = BarangNew::when($request->has('kode') && !empty($request->kode), function ($q) {
-            $q->where('kode', 'like', '%' . request()->kode . '%');
+        $barang = BarangNew::selectRaw('*, YEAR(tanggal_perolehan) as tahun_perolehan')->get();
+        $data  = BarangNew::when($request->filled('kode'), function ($q) {
+            $q->orWhere('kode', 'like', '%' . request()->kode . '%');
+        })->when($request->filled('ruang'), function ($q) {
+            $q->orWhere('ruang', 'like', '%' . request()->ruang . '%');
+        })->when($request->filled('tahun_anggaran'), function ($q) {
+            $q->orWhere('tahun_anggaran', 'like', '%' . request()->tahun_anggaran . '%');
+        })->when($request->filled('kode_lokasi'), function ($q) {
+            $q->orWhere('kode_lokasi', 'like', '%' . request()->kode_lokasi . '%');
+        })->when($request->filled('kode_barang'), function ($q) {
+            $q->orWhere('kode_barang', 'like', '%' . request()->kode_barang . '%');
+        })->when($request->filled('subkelompok_barang'), function ($q) {
+            $q->orWhere('subkelompok_barang', 'like', '%' . request()->subkelompok_barang . '%');
+        })->when($request->filled('subkelompok_barang'), function ($q) {
+            $q->orWhere('tanggal_perolehan', 'like', '%' . request()->tahun_perolehan . '%');
         })
-            ->when($request->has('ruang') && !empty($request->ruang), function ($q) {
-                $q->where('ruang', 'like', '%' . request()->ruang . '%');
-            })
-            ->when($request->has('tahun') && !empty($request->tahun), function ($q) {
-                $q->where('tahun_anggaran', 'like', '%' . request()->tahun . '%');
-            })
-            // ->paginate(10);
-            ->get();
-
-        return view('barang.view', compact('data', 'ruangan', 'tahun'));
+        ->get();
+        return view('barang.view', compact('data', 'ruangan', 'tahun', 'barang'));
     }
 
     public function create(Request $request)
