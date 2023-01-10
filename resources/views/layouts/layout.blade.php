@@ -1,3 +1,6 @@
+@php
+    $setting = getSetting();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +21,7 @@
     <link href="{{ url('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     {{-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.css"> --}}
-
+    <title>{{ $setting->nama ?? '' }}</title>
     <!-- Custom styles for this page -->
     {{-- <link href="{{url('assets/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"> --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
@@ -48,7 +51,7 @@
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
 
-                <img src="{{ asset('img/logo4.png') }}" alt="logo" width="100%">
+                <img src="{{ !empty($setting->logo) ? asset('files/' . $setting->logo) : asset('img/logo4.png') }}" alt="logo" style="width: 100px">
 
                 {{-- <div class="sidebar-brand-text mx-1"><small>BALAI BESAR PERAMALAN OPT</small><BR>DATA BMN</BR></div> --}}
             </a>
@@ -281,6 +284,11 @@
             @endif
 
 
+            <li class="nav-item {{ request()->is('setting-app*') ? 'active' : '' }}">
+                <a class="nav-link " href="/setting-app">
+                    <i class="fas fa-fw fa-cog mr-2 text-gray-400"></i>
+                    <span>Setting</span></a>
+            </li>
             <li class="nav-item {{ request()->is('change-password*') ? 'active' : '' }}">
                 <a class="nav-link " href="/change-password">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>

@@ -15,7 +15,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 */
 
 Route::get('/', function () {
-	return view('auth.login');
+    return view('auth.login');
 });
 
 Route::get('change-password', 'ChangePasswordController@index');
@@ -25,7 +25,7 @@ Route::post('change-password', 'ChangePasswordController@store')->name('change.p
 Auth::routes();
 
 
-Route::post('/user/update','UserController@update');
+Route::post('/user/update', 'UserController@update');
 Route::get('/home', 'HomeController@index');
 Route::post('/user/post', 'UserController@update');
 Route::get('user/json', 'UserController@json');
@@ -34,11 +34,11 @@ Route::get('barang/{id}/tambah-ruang', 'BarangController@tambahRuang');
 Route::put('barang/{id}/simpan-ruang', 'BarangController@simpanRuang');
 Route::resource('barang', 'BarangController');
 
-Route::get('scan-barcode/{id}', function($id){
-	$data = BarangNew::find($id);
-	$url = env('APP_URL') . '/scan-barcode/';
-	$qrcode = QrCode::size(200)->generate($url . $data->id);
-	return view('barang.detail_barcode', compact('data','qrcode'));
+Route::get('scan-barcode/{id}', function ($id) {
+    $data = BarangNew::find($id);
+    $url = env('APP_URL') . '/scan-barcode/';
+    $qrcode = QrCode::size(200)->generate($url . $data->id);
+    return view('barang.detail_barcode', compact('data', 'qrcode'));
 });
 // Route::post('/barang/post', 'BarangController@update');
 // Route::get('/barang/delete/{id_barang}', 'BarangController@delete');
@@ -56,7 +56,7 @@ Route::post('import/store', 'BarangController@importStore');
 // Route::get('/ruangan/hapus/{id_ruangan}', 'RuanganController@hapus');
 
 Route::resource('/ruangan', 'RuanganController');
-
+Route::resource('setting-app', 'SettingController');
 // Kategori
 Route::resource('/kategori', 'KategoriController');
 // Route::get('/kategori', 'KategoriController@index');
@@ -67,20 +67,20 @@ Route::resource('/kategori', 'KategoriController');
 
 //users
 Route::get('/user/edit/{id}', 'UserController@edit');
-Route::get('/pj','UserController@pj');
-Route::post('/store_pj','UserController@store_pj');
-Route::get('/pj/edit/{id}','UserController@edit_pj');
-Route::post('/user_pj/update/','UserController@update_pj');
+Route::get('/pj', 'UserController@pj');
+Route::post('/store_pj', 'UserController@store_pj');
+Route::get('/pj/edit/{id}', 'UserController@edit_pj');
+Route::post('/user_pj/update/', 'UserController@update_pj');
 
-Route::get('/rayon','UserController@rayon');
-Route::post('/store_rayon','UserController@store_rayon');
-Route::get('/rayon/edit/{id}','UserController@edit_rayon');
-Route::post('/user_rayon/update/','UserController@update_rayon');
+Route::get('/rayon', 'UserController@rayon');
+Route::post('/store_rayon', 'UserController@store_rayon');
+Route::get('/rayon/edit/{id}', 'UserController@edit_rayon');
+Route::post('/user_rayon/update/', 'UserController@update_rayon');
 
-Route::get('/bukan_pj','UserController@bukan_pj');
-Route::post('/store_bukan_pj','UserController@store_bukan_pj');
-Route::get('/bukan_pj/edit/{id}','UserController@edit_bukan_pj');
-Route::post('/user_bukan_pj/update/','UserController@update_bukan_pj');
+Route::get('/bukan_pj', 'UserController@bukan_pj');
+Route::post('/store_bukan_pj', 'UserController@store_bukan_pj');
+Route::get('/bukan_pj/edit/{id}', 'UserController@edit_bukan_pj');
+Route::post('/user_bukan_pj/update/', 'UserController@update_bukan_pj');
 
 // Peminjaman
 Route::get('/peminjaman', 'PeminjamanController@index');
@@ -193,7 +193,7 @@ Route::get('/lap_rusak_dalam/export_excel', 'LaporanController@export_rusak_dala
 Route::get('/lap_rusak_luar/export_excel', 'LaporanController@export_rusak_luar');
 
 //Select Insert
-Route::get('/inputpeminjaman','KeranjangpeminjamanController@input');
+Route::get('/inputpeminjaman', 'KeranjangpeminjamanController@input');
 Route::get('/inputmasuk', 'KeranjangmasukController@input');
 Route::get('/inputkeluar', 'KeranjangkeluarController@input');
 Route::get('/inputruangan', 'KeranjangruanganController@input');
@@ -201,54 +201,44 @@ Route::get('/inputrusakruangan', 'KeranjangrusakruanganController@input');
 Route::get('/inputrusakluar', 'KeranjangrusakluarController@input');
 
 //datatable
-Route::get('/barang_json','DatatableController@barang_json');
-Route::get('/input_ruangan_json','DatatableController@input_ruangan_json');
-Route::get('/keluar_json','DatatableController@keluar_json');
-Route::get('/masuk_json','DatatableController@masuk_json');
-Route::get('/peminjaman_json','DatatableController@peminjaman_json');
-Route::get('/rusak_ruangan_json','DatatableController@rusak_ruangan_json');
-Route::get('/rusak_luar_json','DatatableController@rusak_luar_json');
+Route::get('/barang_json', 'DatatableController@barang_json');
+Route::get('/input_ruangan_json', 'DatatableController@input_ruangan_json');
+Route::get('/keluar_json', 'DatatableController@keluar_json');
+Route::get('/masuk_json', 'DatatableController@masuk_json');
+Route::get('/peminjaman_json', 'DatatableController@peminjaman_json');
+Route::get('/rusak_ruangan_json', 'DatatableController@rusak_ruangan_json');
+Route::get('/rusak_luar_json', 'DatatableController@rusak_luar_json');
 
 
 
 
-Route::get('/barang/qrcode/{id_barang}','BarangController@qrcode');
-Route::get('/lap_barang_masuk','LaporanController@lap_barang_masuk');
-Route::post('/lap_barang_masuk_input','LaporanController@lap_barang_masuk');
-Route::get('/lap_barang_keluar','LaporanController@lap_barang_keluar');
-Route::post('/lap_barang_keluar_input','LaporanController@lap_barang_keluar');
-Route::get('/lap_barang_ruangan','LaporanController@lap_barang_ruangan');
-Route::post('/lap_barang_ruangan_input','LaporanController@lap_barang_ruangan');
-Route::get('/lap_peminjaman','LaporanController@lap_peminjaman');
-Route::post('/lap_peminjaman_input','LaporanController@lap_peminjaman');
-Route::get('/lap_rusak_luar','LaporanController@lap_rusak_luar');
-Route::post('/lap_rusak_luar_input','LaporanController@lap_rusak_luar');
-Route::get('/lap_rusak_dalam','LaporanController@lap_rusak_dalam');
-Route::post('/lap_rusak_dalam_input','LaporanController@lap_rusak_dalam');
+Route::get('/barang/qrcode/{id_barang}', 'BarangController@qrcode');
+Route::get('/lap_barang_masuk', 'LaporanController@lap_barang_masuk');
+Route::post('/lap_barang_masuk_input', 'LaporanController@lap_barang_masuk');
+Route::get('/lap_barang_keluar', 'LaporanController@lap_barang_keluar');
+Route::post('/lap_barang_keluar_input', 'LaporanController@lap_barang_keluar');
+Route::get('/lap_barang_ruangan', 'LaporanController@lap_barang_ruangan');
+Route::post('/lap_barang_ruangan_input', 'LaporanController@lap_barang_ruangan');
+Route::get('/lap_peminjaman', 'LaporanController@lap_peminjaman');
+Route::post('/lap_peminjaman_input', 'LaporanController@lap_peminjaman');
+Route::get('/lap_rusak_luar', 'LaporanController@lap_rusak_luar');
+Route::post('/lap_rusak_luar_input', 'LaporanController@lap_rusak_luar');
+Route::get('/lap_rusak_dalam', 'LaporanController@lap_rusak_dalam');
+Route::post('/lap_rusak_dalam_input', 'LaporanController@lap_rusak_dalam');
 
 
-Route::get('/pembimbing','PembimbingController@pembimbing');
+Route::get('/pembimbing', 'PembimbingController@pembimbing');
 
 //inputrusak pj,pem,notpj
-Route::get('/input_rusak_dalam','InputrusakController@index_dalam');
-Route::post('/input_rusak_dalam/input','InputrusakController@store_dalam');
+Route::get('/input_rusak_dalam', 'InputrusakController@index_dalam');
+Route::post('/input_rusak_dalam/input', 'InputrusakController@store_dalam');
 
 
-Route::get('/input_rusak_luar','InputrusakController@index_luar');
-Route::post('/input_rusak_luar/input','InputrusakController@store_luar');
-
-
-
-Route::get('/get-state-list','InputrusakController@getStateList');
-
-Route::get('/get-state-list2/{id}','InputrusakController@getStateList2');
+Route::get('/input_rusak_luar', 'InputrusakController@index_luar');
+Route::post('/input_rusak_luar/input', 'InputrusakController@store_luar');
 
 
 
+Route::get('/get-state-list', 'InputrusakController@getStateList');
 
-
-
-
-
-
-
+Route::get('/get-state-list2/{id}', 'InputrusakController@getStateList2');
