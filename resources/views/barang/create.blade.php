@@ -13,14 +13,17 @@
         }
     </style>
     <link href="{{ asset('vendor/datetimepicker/jquery.datetimepicker.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('vendor/datetimepicker/jquery.datetimepicker.full.min.js') }}"></script>
     <script type="text/javascript">
         $('.tanggal').datetimepicker({
             timepicker: false,
             format: 'Y-m-d',
         });
+        $('#pegawai').select2();
     </script>
 @endsection
 @section('heading-title')
@@ -106,6 +109,17 @@
                                     <option selected>Pilih Kondisi Barang</option>
                                     @foreach ($kondisi as $k => $v)
                                         <option value="{{ $v }}">{{ $v }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label">Pemegang Barang Barang</label>
+                            <div class="col-sm-10">
+                                <select class="custom-select my-1 mr-sm-2" name="pegawai_id" id="pegawai">
+                                    <option selected>Pilih Pemegang Barang</option>
+                                    @foreach ($pegawai as $k => $v)
+                                        <option value="{{ $v->id }}">{{ $v->nip . ' ' . $v->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>

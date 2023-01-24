@@ -108,6 +108,21 @@
                         </div>
                     </div>
                 </li>
+                <li class="nav-item {{ request()->is('laporan*') ? 'active' : '' }} {{ request()->is('laporan*') ? 'active' : '' }} {{ request()->is('laporan*') ? 'active' : '' }}{{ request()->is('kategori*') ? 'active' : '' }}">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Laporan</span>
+                    </a>
+                    <div id="collapseThree" class="collapse {{ request()->is('laporan-barang/baik*') ? 'show' : '' }} {{ request()->is('laporan-barang/ringan*') ? 'show' : '' }} {{ request()->is('laporan-barang/berat*') ? 'show' : '' }}" aria-labelledby="headingTwo"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Laporan</h6>
+                            <a class="collapse-item {{ request()->is('laporan-barang/baik*') ? 'active' : '' }}" href="{{ action('LaporanController@laporan_barang', 'baik') }}">Barang Baik</a>
+                            <a class="collapse-item {{ request()->is('laporan-barang/ringan*') ? 'active' : '' }}" href="{{ action('LaporanController@laporan_barang', 'ringan') }}">Barang Rusak Ringan</a>
+                            <a class="collapse-item {{ request()->is('laporan-barang/berat*') ? 'active' : '' }}" href="action('LaporanController@laporan_barang', 'berat')">Barang Rusak Berat</a>
+                        </div>
+                    </div>
+                </li>
                 {{-- <li class="nav-item {{ (request()->is('user*')) ? 'active' : '' }}">
         <a class="nav-link" href="{{url('user')}}">
           <i class="fas fa-fw fa-user"></i>
@@ -283,7 +298,11 @@
                 </li>
             @endif
 
-
+            <li class="nav-item {{ request()->is('pegawai*') ? 'active' : '' }}">
+                <a class="nav-link " href="/pegawai">
+                    <i class="fas fa-fw fa-user mr-2 text-gray-400"></i>
+                    <span>Pegawai</span></a>
+            </li>
             <li class="nav-item {{ request()->is('setting-app*') ? 'active' : '' }}">
                 <a class="nav-link " href="/setting-app">
                     <i class="fas fa-fw fa-cog mr-2 text-gray-400"></i>

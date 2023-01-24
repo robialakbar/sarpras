@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "maatwebsite/excel": "^3.1",
         "simplesoftwareio/simple-qrcode": "^2.0",
+        "spatie/laravel-permission": "5.3",
         "uxweb/sweet-alert": "^2.0",
         "wildside/userstamps": "^2.2",
         "yajra/laravel-datatables-oracle": "^9.8",

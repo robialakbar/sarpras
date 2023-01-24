@@ -6,6 +6,7 @@ use Alert;
 use App\Barang;
 use App\BarangNew;
 use App\Imports\BarangImport;
+use App\Pegawai;
 use App\Ruangan;
 use DB;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ class BarangController extends Controller
         $ruangan  = Ruangan::pluck('nama_ruangan', 'id');
         $tahun = BarangNew::groupBy('tahun_anggaran')->pluck('tahun_anggaran', 'tahun_anggaran');
         $barang = BarangNew::selectRaw('*, YEAR(tanggal_perolehan) as tahun_perolehan')->get();
+
         $data  = BarangNew::when($request->filled('kode'), function ($q) {
             $q->orWhere('kode', 'like', '%' . request()->kode . '%');
         })->when($request->filled('ruang'), function ($q) {
@@ -42,16 +44,16 @@ class BarangController extends Controller
         })->when($request->filled('subkelompok_barang'), function ($q) {
             $q->orWhere('tanggal_perolehan', 'like', '%' . request()->tahun_perolehan . '%');
         })
-        ->get();
+            ->get();
         return view('barang.view', compact('data', 'ruangan', 'tahun', 'barang'));
     }
 
     public function create(Request $request)
     {
-
+        $pegawai = Pegawai::get();
         $ruangan  = Ruangan::get();
         $kondisi  = ['Baik' => 'Baik', 'Rusak Ringan' => 'Rusak Ringan', 'Rusak Berat' => 'Rusak Berat',];
-        return view('barang.create', compact('ruangan', 'kondisi'));
+        return view('barang.create', compact('ruangan', 'kondisi', 'pegawai'));
     }
 
     public function store(Request $request)
@@ -69,6 +71,7 @@ class BarangController extends Controller
         $data["ruang"] = $request->ruang;
         $data["kondisi_barang"] = $request->kondisi_barang;
         $data["keterangan"] = $request->keterangan;
+        $data["pegawai_id"] = $request->pegawai_id;
 
         if ($request->has('gambar')) {
             $extension = $request->file('gambar')->extension();
@@ -89,9 +92,10 @@ class BarangController extends Controller
 
         $data = BarangNew::find($id);
         $ruangan  = Ruangan::get();
+        $pegawai = Pegawai::get();
         $kondisi  = ['Baik' => 'Baik', 'Rusak Ringan' => 'Rusak Ringan', 'Rusak Berat' => 'Rusak Berat',];
 
-        return view('barang.edit', compact('data', 'ruangan', 'kondisi'));
+        return view('barang.edit', compact('data', 'ruangan', 'kondisi', 'pegawai'));
     }
 
 
@@ -123,6 +127,7 @@ class BarangController extends Controller
         $data["rupiah_satuan"] = $request->rupiah_satuan;
         $data["ruang"] = $request->ruang;
         $data["kondisi_barang"] = $request->kondisi_barang;
+        $data["pegawai_id"] = $request->pegawai_id;
 
         if ($request->has('gambar')) {
             $extension = $request->file('gambar')->extension();

@@ -57,6 +57,7 @@ Route::post('import/store', 'BarangController@importStore');
 
 Route::resource('/ruangan', 'RuanganController');
 Route::resource('setting-app', 'SettingController');
+Route::resource('pegawai', 'PegawaiController');
 // Kategori
 Route::resource('/kategori', 'KategoriController');
 // Route::get('/kategori', 'KategoriController@index');
@@ -242,3 +243,5 @@ Route::post('/input_rusak_luar/input', 'InputrusakController@store_luar');
 Route::get('/get-state-list', 'InputrusakController@getStateList');
 
 Route::get('/get-state-list2/{id}', 'InputrusakController@getStateList2');
+
+Route::get('/laporan-barang/{kondisi}', 'LaporanController@laporan_barang');
