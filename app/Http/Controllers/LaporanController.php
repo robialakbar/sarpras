@@ -223,9 +223,12 @@ class LaporanController extends Controller
     }
 
 
-    public function laporan_barang($kondisi)
+    public function laporan_barang(Request $request, $kondisi)
     {
-        $data = BarangNew::where('kondisi_barang', 'like', '%' . $kondisi . '%')->get();
+        $data = BarangNew::where('kondisi_barang', 'like', '%' . $kondisi . '%')
+            ->when($request->filled('ruang'), function ($q) {
+                $q->where('ruang', 'like', '%' . request()->ruang . '%');
+            })->get();
         $ruangan  = Ruangan::pluck('nama_ruangan', 'id');
         return view('laporan_barang.index', compact('data', 'ruangan'));
     }
