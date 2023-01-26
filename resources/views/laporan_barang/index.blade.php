@@ -73,7 +73,7 @@
                     <form class="">
                         <div class="form-group row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Ruang</label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-10">
                                 <select class="form-control" name="ruang">
                                     <option disabled selected>Pilih Ruangan</option>
                                     @foreach ($ruangan as $val)
@@ -81,9 +81,26 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-2">
-                                <button type="submit" class="btn btn-primary mb-2">Filter</button>
-                                <button type="submit" class="btn btn-danger mb-2">Clear</button>
+                        </div>
+                        @if (auth()->user()->hasRole('admin-pusat'))
+                            <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Cabang</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="cabang">
+                                        <option disabled selected>Pilih Cabang</option>
+                                        @foreach ($cabang as $key => $val)
+                                            <option {{ request()->get('cabang') == $key ? 'selected' : '' }} value="{{ $key }}">{{ $val }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        @endif
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-primary mb-2 col-12">Filter</button>
+                            </div>
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-danger mb-2 col-12">Clear</button>
                             </div>
                         </div>
                     </form>

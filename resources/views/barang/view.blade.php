@@ -143,6 +143,19 @@
                                     </select>
                                 </div>
                             </div>
+                            @if (auth()->user()->hasRole('admin-pusat'))
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlSelect1">Cabang</label>
+                                        <select class="form-control" name="cabang">
+                                            <option selected value="">Semua Cabang</option>
+                                            @foreach ($cabang as $key => $val)
+                                                <option {{ request()->get('cabang') == $key ? 'selected' : '' }} value="{{ $key }}">{{ $val }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="card-footer">
@@ -212,8 +225,8 @@
                                     <a href="{{ action('BarangController@show', $val->id) }}" class="btn btn-xs btn-primary col-12 m-1">Detail</a>
                                     <a href="{{ action('BarangController@edit', $val->id) }}" class="btn btn-xs btn-warning col-12 m-1">Edit</a>
                                     @if (empty($val->ruang))
-                                        <a class="btn btn-xs btn-info col-12 m-1 modal-button" href="Javascript:void(0)" data-target="ModalForm" data-url="{{ action('BarangController@tambahRuang', $val->id) }}" data-toggle="tooltip" data-placement="top"
-                                            title="Tambah">Ruangan</a>
+                                        <a class="btn btn-xs btn-info col-12 m-1 modal-button" href="Javascript:void(0)" data-target="ModalForm" data-url="{{ action('BarangController@tambahRuang', $val->id) }}" data-toggle="tooltip"
+                                            data-placement="top" title="Tambah">Ruangan</a>
                                     @endif
                                     <button type="button" data-url="{{ action('BarangController@destroy', $val->id) }}" class="btn btn-xs btn-danger col-12 m-1 hapus">Hapus</button>
                                 </td>

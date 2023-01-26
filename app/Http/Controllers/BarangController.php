@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Alert;
 use App\Barang;
 use App\BarangNew;
+use App\Cabang;
 use App\Imports\BarangImport;
 use App\Pegawai;
 use App\Ruangan;
@@ -25,27 +26,43 @@ class BarangController extends Controller
 
     public function index(Request $request)
     {
-        $ruangan  = Ruangan::pluck('nama_ruangan', 'id');
-        $tahun = BarangNew::groupBy('tahun_anggaran')->pluck('tahun_anggaran', 'tahun_anggaran');
-        $barang = BarangNew::selectRaw('*, YEAR(tanggal_perolehan) as tahun_perolehan')->get();
+        $ruangan  = Ruangan::selectRaw('ruangans.*,cabang_id')->leftjoin('users', 'ruangans.created_by', 'users.id')
+            // ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+            //     $q->where('cabang_id', auth()->user()->cabang_id);
+            // })
+            ->pluck('nama_ruangan', 'ruangans.id');
+        $tahun = BarangNew::leftjoin('users', 'barang_news.created_by', 'users.id')->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+            $q->where('cabang_id', auth()->user()->cabang_id);
+        })->groupBy('tahun_anggaran')->pluck('tahun_anggaran', 'tahun_anggaran');
+        $barang = BarangNew::leftjoin('users', 'barang_news.created_by', 'users.id')->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+            $q->where('cabang_id', auth()->user()->cabang_id);
+        })->selectRaw('*, YEAR(tanggal_perolehan) as tahun_perolehan')->get();
 
-        $data  = BarangNew::when($request->filled('kode'), function ($q) {
-            $q->orWhere('kode', 'like', '%' . request()->kode . '%');
-        })->when($request->filled('ruang'), function ($q) {
-            $q->orWhere('ruang', 'like', '%' . request()->ruang . '%');
-        })->when($request->filled('tahun_anggaran'), function ($q) {
-            $q->orWhere('tahun_anggaran', 'like', '%' . request()->tahun_anggaran . '%');
-        })->when($request->filled('kode_lokasi'), function ($q) {
-            $q->orWhere('kode_lokasi', 'like', '%' . request()->kode_lokasi . '%');
-        })->when($request->filled('kode_barang'), function ($q) {
-            $q->orWhere('kode_barang', 'like', '%' . request()->kode_barang . '%');
-        })->when($request->filled('subkelompok_barang'), function ($q) {
-            $q->orWhere('subkelompok_barang', 'like', '%' . request()->subkelompok_barang . '%');
-        })->when($request->filled('subkelompok_barang'), function ($q) {
-            $q->orWhere('tanggal_perolehan', 'like', '%' . request()->tahun_perolehan . '%');
-        })
+        $cabang = Cabang::pluck('cabang', 'id');
+
+        $data  = BarangNew::selectRaw('barang_news.*,cabang_id')->leftjoin('users', 'barang_news.created_by', 'users.id')
+            ->when($request->filled('kode'), function ($q) {
+                $q->orWhere('kode', 'like', '%' . request()->kode . '%');
+            })->when($request->filled('ruang'), function ($q) {
+                $q->orWhere('ruang', 'like', '%' . request()->ruang . '%');
+            })->when($request->filled('tahun_anggaran'), function ($q) {
+                $q->orWhere('tahun_anggaran', 'like', '%' . request()->tahun_anggaran . '%');
+            })->when($request->filled('kode_lokasi'), function ($q) {
+                $q->orWhere('kode_lokasi', 'like', '%' . request()->kode_lokasi . '%');
+            })->when($request->filled('kode_barang'), function ($q) {
+                $q->orWhere('kode_barang', 'like', '%' . request()->kode_barang . '%');
+            })->when($request->filled('subkelompok_barang'), function ($q) {
+                $q->orWhere('subkelompok_barang', 'like', '%' . request()->subkelompok_barang . '%');
+            })->when($request->filled('subkelompok_barang'), function ($q) {
+                $q->orWhere('tanggal_perolehan', 'like', '%' . request()->tahun_perolehan . '%');
+            })->when($request->filled('cabang'), function ($q) {
+                $q->orWhere('cabang_id',  request()->cabang);
+            })->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+                $q->where('cabang_id', auth()->user()->cabang_id);
+            })
             ->get();
-        return view('barang.view', compact('data', 'ruangan', 'tahun', 'barang'));
+
+        return view('barang.view', compact('data', 'ruangan', 'tahun', 'barang', 'cabang'));
     }
 
     public function create(Request $request)

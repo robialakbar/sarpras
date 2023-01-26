@@ -245,3 +245,4 @@ Route::get('/get-state-list', 'InputrusakController@getStateList');
 Route::get('/get-state-list2/{id}', 'InputrusakController@getStateList2');
 
 Route::get('/laporan-barang/{kondisi}', 'LaporanController@laporan_barang');
+Route::resource('/cabang', 'CabangController');

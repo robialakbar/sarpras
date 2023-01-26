@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cabang;
 use App\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,9 +16,12 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        $data = Pegawai::get();
-
-        return view('pegawai.index', compact('data'));
+        $data = Pegawai::selectRaw('pegawais.*,cabang_id')->leftjoin('users', 'pegawais.created_by', 'users.id')
+            ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+                $q->where('cabang_id', auth()->user()->cabang_id);
+            })->get();
+        $cabang = Cabang::pluck('cabang', 'id');
+        return view('pegawai.index', compact('data', 'cabang'));
     }
 
     /**
@@ -117,8 +121,11 @@ class PegawaiController extends Controller
      * @param  \App\Pegawai  $pegawai
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pegawai $pegawai)
+    public function destroy($id)
     {
-        //
+        $data = Pegawai::find($id);
+        $data->delete();
+        $result['code'] = '200';
+        return response()->json($result);
     }
 }

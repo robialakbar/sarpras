@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use Alert;
 use App\BarangNew;
+use App\Cabang;
 use App\Exports\LaporanKeluar;
 use App\Exports\LaporanMasuk;
 use App\Exports\LaporanRuangan;
@@ -225,11 +226,20 @@ class LaporanController extends Controller
 
     public function laporan_barang(Request $request, $kondisi)
     {
-        $data = BarangNew::where('kondisi_barang', 'like', '%' . $kondisi . '%')
+        $data = BarangNew::selectRaw('barang_news.*,cabang_id')->leftjoin('users', 'barang_news.created_by', 'users.id')->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+            $q->where('cabang_id', auth()->user()->cabang_id);
+        })
+            ->where('kondisi_barang', 'like', '%' . $kondisi . '%')
             ->when($request->filled('ruang'), function ($q) {
                 $q->where('ruang', 'like', '%' . request()->ruang . '%');
+            })
+            ->when($request->filled('cabang'), function ($q) {
+                $q->where('cabang_id', request()->cabang);
             })->get();
-        $ruangan  = Ruangan::pluck('nama_ruangan', 'id');
-        return view('laporan_barang.index', compact('data', 'ruangan'));
+        $ruangan  = Ruangan::selectRaw('ruangans.*,cabang_id')->leftjoin('users', 'ruangans.created_by', 'users.id')->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+            $q->where('cabang_id', auth()->user()->cabang_id);
+        })->pluck('nama_ruangan', 'ruangans.id');
+        $cabang  = Cabang::pluck('cabang', 'id');
+        return view('laporan_barang.index', compact('data', 'ruangan', 'cabang'));
     }
 }

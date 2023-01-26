@@ -3,11 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Wildside\Userstamps\Userstamps;
 
 class BarangNew extends Model
 {
-    use Userstamps;
+    use Userstamps, SoftDeletes;
 
     protected $with = ['Ruangan'];
 

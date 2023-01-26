@@ -35,6 +35,29 @@
         </div>
 
         <div class="card-body">
+            @if (auth()->user()->hasRole('admin-pusat'))
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <form class="">
+                            <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Cabang</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="cabang">
+                                        <option disabled selected>Pilih Pilih Cabang</option>
+                                        @foreach ($cabang as $key => $val)
+                                            <option {{ request()->get('cabang') == $key ? 'selected' : '' }} value="{{ $key }}">{{ $val }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                                    {{-- <button type="submit" class="btn btn-danger mb-2">Clear</button> --}}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            @endif
             <div class="table-responsive">
                 <table class="table table-striped mb-0" data-language="id" id="example">
                     <thead>
