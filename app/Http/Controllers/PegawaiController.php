@@ -16,7 +16,8 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        $data = Pegawai::selectRaw('pegawais.*,cabang_id')->leftjoin('users', 'pegawais.created_by', 'users.id')
+        $data = Pegawai::selectRaw('pegawais.*,cabang_id')
+            ->leftjoin('users', 'pegawais.created_by', 'users.id')
             ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
                 $q->where('cabang_id', auth()->user()->cabang_id);
             })->get();

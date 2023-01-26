@@ -93,22 +93,22 @@
                 </li>
 
                 @if (auth()->user()->hasRole('admin-pusat'))
-                <li class="nav-item {{ request()->is('user*') ? 'active' : '' }} {{ request()->is('pj*') ? 'active' : '' }} {{ request()->is('rayon*') ? 'active' : '' }} {{ request()->is('bukan_pj*') ? 'active' : '' }}">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse0" aria-expanded="true" aria-controls="collapse0">
-                        <i class="fas fa-fw fa-user"></i>
-                        <span>Data User</span>
-                    </a>
-                    <div id="collapse0" class="collapse {{ request()->is('user*') ? 'show' : '' }} {{ request()->is('pj*') ? 'show' : '' }} {{ request()->is('rayon*') ? 'show' : '' }} {{ request()->is('bukan_pj*') ? 'show' : '' }}"
-                        aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Data User</h6>
-                            <a class="collapse-item {{ request()->is('user*') ? 'active' : '' }}" href="{{ url('user') }}">Admin</a>
-                            {{-- 	<a class="collapse-item {{ (request()->is('rayon*')) ? 'active' : '' }}" href="{{url('rayon')}}">Pembimbing</a>
+                    <li class="nav-item {{ request()->is('user*') ? 'active' : '' }} {{ request()->is('pj*') ? 'active' : '' }} {{ request()->is('rayon*') ? 'active' : '' }} {{ request()->is('bukan_pj*') ? 'active' : '' }}">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse0" aria-expanded="true" aria-controls="collapse0">
+                            <i class="fas fa-fw fa-user"></i>
+                            <span>Data User</span>
+                        </a>
+                        <div id="collapse0" class="collapse {{ request()->is('user*') ? 'show' : '' }} {{ request()->is('pj*') ? 'show' : '' }} {{ request()->is('rayon*') ? 'show' : '' }} {{ request()->is('bukan_pj*') ? 'show' : '' }}"
+                            aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <h6 class="collapse-header">Data User</h6>
+                                <a class="collapse-item {{ request()->is('user*') ? 'active' : '' }}" href="{{ url('user') }}">Admin</a>
+                                {{-- 	<a class="collapse-item {{ (request()->is('rayon*')) ? 'active' : '' }}" href="{{url('rayon')}}">Pembimbing</a>
   							<a class="collapse-item {{ (request()->is('pj*')) ? 'active' : '' }}" href="{{url('pj')}}">Pj Ruangan</a>
   							<a class="collapse-item {{ (request()->is('bukan_pj*')) ? 'active' : '' }}" href="{{url('bukan_pj')}}">Bukan Pj</a> --}}
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 @endif
                 <li class="nav-item {{ request()->is('laporan*') ? 'active' : '' }} {{ request()->is('laporan*') ? 'active' : '' }} {{ request()->is('laporan*') ? 'active' : '' }}{{ request()->is('kategori*') ? 'active' : '' }}">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
@@ -502,10 +502,11 @@
             }).then((result) => {
                 if (result.value == true) {
                     $.ajax({
-                        type: 'DELETE',
+                        type: 'POST',
                         url: url,
                         data: {
                             "_token": "{{ csrf_token() }}",
+                            "_method": "delete",
                         },
                         success: function(data) {
                             if (data.code == '200') {
