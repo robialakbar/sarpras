@@ -121,7 +121,7 @@
                                 <select class="custom-select my-1 mr-sm-2" name="pegawai_id" id="pegawai">
                                     <option selected>Pilih Pemegang Barang</option>
                                     @foreach ($pegawai as $k => $v)
-                                        <option value="{{ $v->id }}">{{ $v->nip . ' ' . $v->nama }}</option>
+                                        <option value="{{ $v->id }}" {{ $v->id == $data->pegawai_id ? 'selected' : '' }}>{{ $v->nip . ' ' . $v->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
