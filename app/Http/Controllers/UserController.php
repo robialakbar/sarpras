@@ -91,7 +91,7 @@ class UserController extends Controller
         $user->assignRole($request->role);
 
         Alert::success('Success', 'Data Telah Terinput');
-        return redirect()->back();
+        return redirect(action('UserController@index'));
     }
 
     public function show(User $user)
