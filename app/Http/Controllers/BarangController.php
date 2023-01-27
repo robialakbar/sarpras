@@ -40,11 +40,14 @@ class BarangController extends Controller
 
         $cabang = Cabang::pluck('cabang', 'id');
 
-        $data  = BarangNew::selectRaw('barang_news.*,cabang_id')->leftjoin('users', 'barang_news.created_by', 'users.id')
+        $data  = BarangNew::selectRaw('barang_news.*,cabang_id,nama_ruangan')
+            ->leftjoin('users', 'barang_news.created_by', 'users.id')
+            ->leftjoin('ruangans', 'barang_news.ruangan', 'ruangans.id')
             ->when($request->filled('kode'), function ($q) {
                 $q->orWhere('kode', 'like', '%' . request()->kode . '%');
             })->when($request->filled('ruang'), function ($q) {
-                $q->orWhere('ruang', 'like', '%' . request()->ruang . '%');
+                $q->orWhere('ruang', 'like', '%' . request()->ruang . '%')
+                    ->orWhere('nama_ruangan', 'like', '%' . request()->ruang . '%');
             })->when($request->filled('tahun_anggaran'), function ($q) {
                 $q->orWhere('tahun_anggaran', 'like', '%' . request()->tahun_anggaran . '%');
             })->when($request->filled('kode_lokasi'), function ($q) {
