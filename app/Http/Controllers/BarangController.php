@@ -43,24 +43,27 @@ class BarangController extends Controller
         $data  = BarangNew::selectRaw('barang_news.*,cabang_id,nama_ruangan')
             ->leftjoin('users', 'barang_news.created_by', 'users.id')
             ->leftjoin('ruangans', 'barang_news.ruang', 'ruangans.id')
-            ->when($request->filled('kode'), function ($q) {
-                $q->orWhere('kode', 'like', '%' . request()->kode . '%');
-            })->when($request->filled('ruang'), function ($q) {
-                $q->orWhere('ruang', 'like', '%' . request()->ruang . '%')
-                    ->orWhere('nama_ruangan', 'like', '%' . request()->ruang . '%');
-            })->when($request->filled('tahun_anggaran'), function ($q) {
-                $q->orWhere('tahun_anggaran', 'like', '%' . request()->tahun_anggaran . '%');
-            })->when($request->filled('kode_lokasi'), function ($q) {
-                $q->orWhere('kode_lokasi', 'like', '%' . request()->kode_lokasi . '%');
-            })->when($request->filled('kode_barang'), function ($q) {
-                $q->orWhere('kode_barang', 'like', '%' . request()->kode_barang . '%');
-            })->when($request->filled('subkelompok_barang'), function ($q) {
-                $q->orWhere('subkelompok_barang', 'like', '%' . request()->subkelompok_barang . '%');
-            })->when($request->filled('subkelompok_barang'), function ($q) {
-                $q->orWhere('tanggal_perolehan', 'like', '%' . request()->tahun_perolehan . '%');
-            })->when($request->filled('cabang'), function ($q) {
-                $q->orWhere('cabang_id',  request()->cabang);
-            })->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+            ->where(function ($q) use ($request) {
+                $q->when($request->filled('kode'), function ($q) {
+                    $q->orWhere('kode', 'like', '%' . request()->kode . '%');
+                })->when($request->filled('ruang'), function ($q) {
+                    $q->orWhere('ruang', 'like', '%' . request()->ruang . '%')
+                        ->orWhere('nama_ruangan', 'like', '%' . request()->ruang . '%');
+                })->when($request->filled('tahun_anggaran'), function ($q) {
+                    $q->orWhere('tahun_anggaran', 'like', '%' . request()->tahun_anggaran . '%');
+                })->when($request->filled('kode_lokasi'), function ($q) {
+                    $q->orWhere('kode_lokasi', 'like', '%' . request()->kode_lokasi . '%');
+                })->when($request->filled('kode_barang'), function ($q) {
+                    $q->orWhere('kode_barang', 'like', '%' . request()->kode_barang . '%');
+                })->when($request->filled('subkelompok_barang'), function ($q) {
+                    $q->orWhere('subkelompok_barang', 'like', '%' . request()->subkelompok_barang . '%');
+                })->when($request->filled('subkelompok_barang'), function ($q) {
+                    $q->orWhere('tanggal_perolehan', 'like', '%' . request()->tahun_perolehan . '%');
+                })->when($request->filled('cabang'), function ($q) {
+                    $q->orWhere('cabang_id',  request()->cabang);
+                });
+            })
+            ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
                 $q->where('cabang_id', auth()->user()->cabang_id);
             })
             ->get();
