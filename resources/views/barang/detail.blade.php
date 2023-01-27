@@ -114,7 +114,7 @@
                         <div class="card-header text-center">
                             Pemegang Barang
                         </div>
-                        <div class="card-body">
+                        <div class="card-body text-center">
                             @if (!empty($data->pegawai_id))
                                 <img src="{{ Storage::url($data->Pegawai->foto) }}" class="img-fluid img-thumbnail" alt="Responsive image">
                             @else

@@ -104,7 +104,7 @@ class PegawaiController extends Controller
         $data['nama_bidang'] = $request->nama_bidang;
         $data['nama_dinas'] = $request->nama_dinas;
 
-        if ($request->filled('foto')) {
+        if ($request->has('foto')) {
             $extension = $request->file('foto')->extension();
             $imgName = 'foto/' . date('dmh') . '-' . rand(1, 10) . '-' . $data['nama'] . '.' . $extension;
             $path = Storage::putFileAs('public', $request->file('foto'), $imgName);
