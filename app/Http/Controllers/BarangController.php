@@ -42,7 +42,7 @@ class BarangController extends Controller
 
         $data  = BarangNew::selectRaw('barang_news.*,cabang_id,nama_ruangan')
             ->leftjoin('users', 'barang_news.created_by', 'users.id')
-            ->leftjoin('ruangans', 'barang_news.ruangan', 'ruangans.id')
+            ->leftjoin('ruangans', 'barang_news.ruang', 'ruangans.id')
             ->when($request->filled('kode'), function ($q) {
                 $q->orWhere('kode', 'like', '%' . request()->kode . '%');
             })->when($request->filled('ruang'), function ($q) {
