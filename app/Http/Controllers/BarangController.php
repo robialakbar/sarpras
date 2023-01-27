@@ -57,8 +57,10 @@ class BarangController extends Controller
                     $q->orWhere('kode_barang', 'like', '%' . request()->kode_barang . '%');
                 })->when($request->filled('subkelompok_barang'), function ($q) {
                     $q->orWhere('subkelompok_barang', 'like', '%' . request()->subkelompok_barang . '%');
-                })->when($request->filled('subkelompok_barang'), function ($q) {
+                })->when($request->filled('tanggal_perolehan'), function ($q) {
                     $q->orWhere('tanggal_perolehan', 'like', '%' . request()->tahun_perolehan . '%');
+                })->when($request->filled('kondisi_barang'), function ($q) {
+                    $q->orWhere('kondisi_barang', 'like', '%' . request()->kondisi_barang . '%');
                 })->when($request->filled('cabang'), function ($q) {
                     $q->orWhere('cabang_id',  request()->cabang);
                 });
