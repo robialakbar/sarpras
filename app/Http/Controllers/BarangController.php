@@ -55,8 +55,8 @@ class BarangController extends Controller
                     $q->orWhere('kode_lokasi', 'like', '%' . request()->kode_lokasi . '%');
                 })->when($request->filled('kode_barang'), function ($q) {
                     $q->orWhere('kode_barang', 'like', '%' . request()->kode_barang . '%');
-                })->when($request->filled('subkelompok_barang'), function ($q) {
-                    $q->orWhere('subkelompok_barang', 'like', '%' . request()->subkelompok_barang . '%');
+                })->when($request->filled('sub_kelompok_barang'), function ($q) {
+                    $q->orWhere('subkelompok_barang', 'like', '%' . request()->sub_kelompok_barang . '%');
                 })->when($request->filled('tahun_perolehan'), function ($q) {
                     $q->orWhere('tanggal_perolehan', 'like', '%' . request()->tahun_perolehan . '%');
                 })->when($request->filled('kondisi_barang'), function ($q) {
@@ -75,8 +75,16 @@ class BarangController extends Controller
 
     public function create(Request $request)
     {
-        $pegawai = Pegawai::get();
-        $ruangan  = Ruangan::get();
+        $pegawai = Pegawai::leftjoin('users', 'pegawais.created_by', 'users.id')
+            ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+                $q->where('cabang_id', auth()->user()->cabang_id);
+            })
+            ->get();
+        $ruangan  = Ruangan::leftjoin('users', 'ruangans.created_by', 'users.id')
+            ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+                $q->where('cabang_id', auth()->user()->cabang_id);
+            })
+            ->get();
         $kondisi  = ['Baik' => 'Baik', 'Rusak Ringan' => 'Rusak Ringan', 'Rusak Berat' => 'Rusak Berat',];
         return view('barang.create', compact('ruangan', 'kondisi', 'pegawai'));
     }

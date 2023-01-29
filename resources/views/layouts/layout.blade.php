@@ -86,7 +86,9 @@
                             <h6 class="collapse-header">Data Master</h6>
                             <a class="collapse-item {{ request()->is('barang*') ? 'active' : '' }}" href="{{ url('barang') }}">Barang</a>
                             <a class="collapse-item {{ request()->is('ruangan*') ? 'active' : '' }}" href="{{ url('ruangan') }}">Ruangan</a>
-                            <a class="collapse-item {{ request()->is('cabang*') ? 'active' : '' }}" href="{{ url('cabang') }}">Cabang</a>
+                            @if (auth()->user()->hasRole('admin-pusat'))
+                                <a class="collapse-item {{ request()->is('cabang*') ? 'active' : '' }}" href="{{ url('cabang') }}">Cabang</a>
+                            @endif
                             {{--   							<a class="collapse-item {{ (request()->is('kategori*')) ? 'active' : '' }}" href="{{url('kategori')}}">Kategori</a> --}}
                         </div>
                     </div>

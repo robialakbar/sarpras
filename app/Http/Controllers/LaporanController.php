@@ -230,12 +230,18 @@ class LaporanController extends Controller
             $q->where('cabang_id', auth()->user()->cabang_id);
         })
             ->where('kondisi_barang', 'like', '%' . $kondisi . '%')
-            ->when($request->filled('ruang'), function ($q) {
-                $q->where('ruang', 'like', '%' . request()->ruang . '%');
+            ->where(function ($q) use ($request) {
+                $q->when($request->filled('ruang'), function ($q) {
+                    $q->orWhere('ruang', 'like', '%' . request()->ruang . '%');
+                })
+                    ->when($request->filled('cabang'), function ($q) {
+                        $q->orWhere('cabang_id', request()->cabang);
+                    });
             })
-            ->when($request->filled('cabang'), function ($q) {
-                $q->where('cabang_id', request()->cabang);
-            })->get();
+            ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+                $q->where('cabang_id', auth()->user()->cabang_id);
+            })
+            ->get();
         $ruangan  = Ruangan::selectRaw('ruangans.*,cabang_id')->leftjoin('users', 'ruangans.created_by', 'users.id')->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
             $q->where('cabang_id', auth()->user()->cabang_id);
         })->pluck('nama_ruangan', 'ruangans.id');

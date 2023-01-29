@@ -77,7 +77,7 @@
                         @foreach ($data as $pegawai)
                             <tr>
                                 <td>
-                                    <img src="{{ Storage::url($pegawai->foto) }}" class="img-fluid img-thumbnail" alt="Responsive image">
+                                    <img src="{{ Storage::url($pegawai->foto) }}" class="img-fluid img-thumbnail" style="height: 50px;" alt="Responsive image">
                                 </td>
                                 <td>{{ $pegawai->nip }}</td>
                                 <td>{{ $pegawai->nama }}</td>
@@ -88,6 +88,7 @@
                                 <td>{{ $pegawai->nama_dinas }}</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a href="{{ action('PegawaiController@show', $pegawai->id) }}" class="btn btn-xs btn-info ">Detail</a>
                                         <a href="{{ action('PegawaiController@edit', $pegawai->id) }}" class="btn btn-xs btn-warning ">Edit</a>
                                         <button data-url="{{ action('PegawaiController@destroy', $pegawai->id) }}" class="btn btn-xs btn-danger hapus">Hapus</button>
                                     </div>
