@@ -31,7 +31,8 @@ class BarangController extends Controller
             //     $q->where('cabang_id', auth()->user()->cabang_id);
             // })
             ->pluck('nama_ruangan', 'ruangans.id');
-        $tahun = BarangNew::leftjoin('users', 'barang_news.created_by', 'users.id')->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+        $tahun = BarangNew::leftjoin('users', 'barang_news.created_by', 'users.id')
+        ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
             $q->where('cabang_id', auth()->user()->cabang_id);
         })->groupBy('tahun_anggaran')->pluck('tahun_anggaran', 'tahun_anggaran');
         $barang = BarangNew::leftjoin('users', 'barang_news.created_by', 'users.id')->when(auth()->user()->hasRole('admin-cabang'), function ($q) {

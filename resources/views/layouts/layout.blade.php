@@ -123,7 +123,7 @@
                             <h6 class="collapse-header">Laporan</h6>
                             <a class="collapse-item {{ request()->is('laporan-barang/baik*') ? 'active' : '' }}" href="{{ action('LaporanController@laporan_barang', 'baik') }}">Barang Baik</a>
                             <a class="collapse-item {{ request()->is('laporan-barang/ringan*') ? 'active' : '' }}" href="{{ action('LaporanController@laporan_barang', 'ringan') }}">Barang Rusak Ringan</a>
-                            <a class="collapse-item {{ request()->is('laporan-barang/berat*') ? 'active' : '' }}" href="action('LaporanController@laporan_barang', 'berat')">Barang Rusak Berat</a>
+                            <a class="collapse-item {{ request()->is('laporan-barang/berat*') ? 'active' : '' }}" href="{{ action('LaporanController@laporan_barang', 'berat') }}">Barang Rusak Berat</a>
                         </div>
                     </div>
                 </li>

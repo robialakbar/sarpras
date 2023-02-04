@@ -88,7 +88,7 @@ class UserController extends Controller
         $data = array_replace($request->all(), ['password' => $password]);
 
         $user = User::create($data);
-        $user->assignRole($request->role);
+        $user->syncRoles([$request->role]);
 
         Alert::success('Success', 'Data Telah Terinput');
         return redirect(action('UserController@index'));
@@ -107,12 +107,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user2 = DB::table('users')->where('id', $id)->first();
-        $user = DB::table('users')->get();
+        $user = User::findOrFail($id);
+        $cabang = Cabang::pluck('cabang', 'id');
+        $role = Role::pluck('name', 'name');
 
-        $ruangan = DB::table('ruangan')->get();
-
-        return view('user.edit', compact('user', 'ruangan', 'user2'));
+        return view('user.edit', compact('user', 'cabang', 'role'));
     }
 
     /**
@@ -122,14 +121,14 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
 
-        DB::table('users')->where('id', $request->id)->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'username' => $request->username
-        ]);
+        $password = Hash::make($request->password);
+        $data = array_replace($request->all(), ['password' => $password]);
+
+        $user = User::find($id);
+        $user->update($data);
 
         Alert::success('Success', 'Data Telah Terupdate');
         return redirect()->route('user.index');
@@ -141,11 +140,12 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        $user->delete();
-        Alert::success('Success', 'Data Telah Terhapus');
-        return redirect()->back();
+        $data = User::find($id);
+        $data->delete();
+        $result['code'] = '200';
+        return response()->json($result);
     }
 
     //pj

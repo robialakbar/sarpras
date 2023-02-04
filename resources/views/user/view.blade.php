@@ -19,7 +19,6 @@
                 @enderror
             </div>
 
-            <button class="" data-toggle="modal" data-target="#tambah">Tambah Data</button>
             <a href="{{ action('UserController@create') }}" class="btn btn-success">Tambah Data</a>
             <br>
             <br>
@@ -48,6 +47,7 @@
                             <td>
                                 <div class="row">
                                     <a href="/user/edit/{{ $u->id }}" class="btn btn-primary btn-sm ml-2">Edit</a>
+                                    <button type="button" data-url="{{ action('UserController@destroy', $u->id) }}" class="btn btn-danger btn-sm ml-2 hapus">Hapus</button>
                                     {{-- <form action="{{ route('user.destroy',$u->id) }}" method="POST">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm ml-2">Delete</button>
@@ -95,7 +95,6 @@
                         <div class="form-group">
                             <label for="">Cabang</label>
                             <select name="" id="">
-
                                 <option value=""></option>
                             </select>
                         </div>
