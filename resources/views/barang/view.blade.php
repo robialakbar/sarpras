@@ -240,7 +240,7 @@
                                 <td>{{ $val->merk_type }}</td>
                                 <td>{{ $val->tanggal_perolehan }}</td>
                                 <td>Rp.{{ Ribuan($val->rupiah_satuan) }}</td>
-                                <td>{{ optional($val->Ruangan)->nama_ruangan ?? $val->ruang }}</td>
+                                <td>{{ optional($val->Ruangan)->nama_ruangan ?? '-' }}</td>
                                 <td>{{ $val->kondisi_barang }}</td>
                                 <td>{{ $val->keterangan }}</td>
                             </tr>
