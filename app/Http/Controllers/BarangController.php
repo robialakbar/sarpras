@@ -162,6 +162,7 @@ class BarangController extends Controller
         $data["ruang"] = $request->ruang;
         $data["kondisi_barang"] = $request->kondisi_barang;
         $data["pegawai_id"] = $request->pegawai_id;
+        $data["keterangan"] = $request->keterangan;
 
         if ($request->has('gambar')) {
             $extension = $request->file('gambar')->extension();

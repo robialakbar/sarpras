@@ -81,7 +81,7 @@
                         </tr>
                         <tr>
                             <th>Ruang</th>
-                            <td>: {{ $data->ruang }}</td>
+                            <td>: {{ optional($data->Ruangan)->ruang }}</td>
                         </tr>
                         <tr>
                             <th>Kondisi Barang</th>
