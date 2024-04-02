@@ -518,9 +518,8 @@
                                 // 	'success'
                                 // 	);
                                 toastr.success('Data Berhasil Dihapus');
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 1000);
+                            }else{
+                                toastr.warning(data.message);
                             }
                         }
                     });

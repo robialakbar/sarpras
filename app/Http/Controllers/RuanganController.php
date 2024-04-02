@@ -64,9 +64,15 @@ class RuanganController extends Controller
 
     public function destroy($id)
     {
-        $data = Ruangan::find($id);
-        $data->delete();
-        $result['code'] = '200';
-        return response()->json($result);
+        $data = Ruangan::with('Barangs')->find($id);
+        if(count($data->Barangs)){
+            $result['code'] = '500';
+            $result['message'] = 'Data Ruangan Tidak Bisa Dihapus, Terdapat Data Barang Yang Terkait';
+            return response()->json($result);
+        }else{
+            $data->delete();
+            $result['code'] = '200';
+            return response()->json($result);
+        }
     }
 }
