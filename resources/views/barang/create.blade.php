@@ -96,7 +96,7 @@
                                 <select class="custom-select my-1 mr-sm-2" name="ruang">
                                     <option>Pilih Ruangan</option>
                                     @foreach ($ruangan as $key => $val)
-                                        <option value="{{ $val->id }}">{{ $val->nama_ruangan }}</option>
+                                        <option value="{{ $key }}">{{ $val }}</option>
                                     @endforeach
                                 </select>
 

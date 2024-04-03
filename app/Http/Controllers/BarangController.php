@@ -26,11 +26,13 @@ class BarangController extends Controller
 
     public function index(Request $request)
     {
-        $ruangan  = Ruangan::selectRaw('ruangans.*,cabang_id')->leftjoin('users', 'ruangans.created_by', 'users.id')
+        $ruangan  = Ruangan::selectRaw('ruangans.*,cabang_id')
+            ->leftjoin('users', 'ruangans.created_by', 'users.id')
             // ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
             //     $q->where('cabang_id', auth()->user()->cabang_id);
             // })
             ->pluck('nama_ruangan', 'ruangans.id');
+
         $tahun = BarangNew::leftjoin('users', 'barang_news.created_by', 'users.id')
         ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
             $q->where('cabang_id', auth()->user()->cabang_id);
@@ -80,19 +82,20 @@ class BarangController extends Controller
             ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
                 $q->where('cabang_id', auth()->user()->cabang_id);
             })
+            ->selectRaw('pegawais.id, nip, nama')
             ->get();
         $ruangan  = Ruangan::leftjoin('users', 'ruangans.created_by', 'users.id')
             ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
                 $q->where('cabang_id', auth()->user()->cabang_id);
             })
-            ->get();
+            ->pluck('nama_ruangan', 'ruangans.id');
+
         $kondisi  = ['Baik' => 'Baik', 'Rusak Ringan' => 'Rusak Ringan', 'Rusak Berat' => 'Rusak Berat',];
         return view('barang.create', compact('ruangan', 'kondisi', 'pegawai'));
     }
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $data["kode"] = $request->kode_lokasi . $request->tahun_anggaran . $request->kode_barang . $request->nomor_aset;
         $data["kode_lokasi"] = $request->kode_lokasi;
         $data["tahun_anggaran"] = $request->tahun_anggaran;
@@ -106,6 +109,7 @@ class BarangController extends Controller
         $data["kondisi_barang"] = $request->kondisi_barang;
         $data["keterangan"] = $request->keterangan;
         $data["pegawai_id"] = $request->pegawai_id;
+
 
         if ($request->has('gambar')) {
             $extension = $request->file('gambar')->extension();
@@ -125,8 +129,17 @@ class BarangController extends Controller
     {
 
         $data = BarangNew::find($id);
-        $ruangan  = Ruangan::get();
-        $pegawai = Pegawai::get();
+        $pegawai = Pegawai::leftjoin('users', 'pegawais.created_by', 'users.id')
+            ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+                $q->where('cabang_id', auth()->user()->cabang_id);
+            })
+            ->selectRaw('pegawais.id, nip, nama')
+            ->get();
+        $ruangan  = Ruangan::leftjoin('users', 'ruangans.created_by', 'users.id')
+            ->when(auth()->user()->hasRole('admin-cabang'), function ($q) {
+                $q->where('cabang_id', auth()->user()->cabang_id);
+            })
+            ->pluck('nama_ruangan', 'ruangans.id');
         $kondisi  = ['Baik' => 'Baik', 'Rusak Ringan' => 'Rusak Ringan', 'Rusak Berat' => 'Rusak Berat',];
 
         return view('barang.edit', compact('data', 'ruangan', 'kondisi', 'pegawai'));
