@@ -17,4 +17,5 @@ Add two new lines after the above commented line:
 
 $installed = json_decode($this->files->get($path), true);
 $packages = $installed['packages'] ?? $installed;
-PHP 7.3
+PHP 7.4
+FOLDER VENDOR pake extract yg saya buat zip
